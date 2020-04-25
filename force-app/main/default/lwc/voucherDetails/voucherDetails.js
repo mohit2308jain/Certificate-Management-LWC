@@ -1,4 +1,4 @@
-import { LightningElement, wire, track } from 'lwc';
+import { LightningElement, wire, track, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { createRecord, getRecord } from 'lightning/uiRecordApi';
 import { updateRecord } from 'lightning/uiRecordApi';
@@ -6,6 +6,9 @@ import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
 
+import Certification_Object from '@salesforce/schema/Certification__c';
+import CertificateName from '@salesforce/schema/Certification__c.Name';
+import CertificateCost from '@salesforce/schema/Certification__c.Cost__c';
 import Voucher_Object from '@salesforce/schema/Voucher__c';
 import VoucherName from '@salesforce/schema/Voucher__c.Name';
 import VoucherCost from '@salesforce/schema/Voucher__c.Cost__c';
@@ -18,7 +21,7 @@ const COLS = [
     { label: 'Voucher Id', fieldName: 'Voucher_Id__c' },
     { label: 'Name', fieldName: 'Name', type: 'text', editable: true },
     { label: 'Cost', fieldName: 'Cost__c', type: 'number', cellAttributes: { alignment: 'left' } },
-    { label: 'Certification', fieldName: 'Certification__c'},
+    //{ label: 'Certification', fieldName: 'Certification__c'},
     { label: 'Validity', fieldName: 'Validity__c', type: 'date'},
     { label: 'Active', fieldName: 'Active__c', type: 'boolean', editable: true},
     { label: 'Comments', fieldName: 'Comments__c', type: 'text', editable: true },
@@ -44,6 +47,11 @@ const COLS = [
     }
 ];
 
+/*
+const FI = [
+    'Certification__c.Name'
+];
+*/
 
 export default class VoucherDetails extends LightningElement {
     name_field = VoucherName;
@@ -74,7 +82,8 @@ export default class VoucherDetails extends LightningElement {
     @track draftValues = [];
     selected = [];
 
-    @track recId;
+    
+    recId = '';
     @wire(getVoucherList)
     vouchers;
 

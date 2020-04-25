@@ -16,9 +16,9 @@ import CertificationReqEmployee from '@salesforce/schema/Certification_Request__
 
 const COLS = [
     { label: 'Req Id', fieldName: 'Name' },
-    { label: 'Certification', fieldName: 'Certification__c'},
-    { label: 'Employee', fieldName: 'Employee__c' },
-    { label: 'Voucher', fieldName: 'Voucher__c', },
+    //{ label: 'Certification', fieldName: 'Certification__c'},
+    //{ label: 'Employee', fieldName: 'Employee__c' },
+    //{ label: 'Voucher', fieldName: 'Voucher__c', },
     { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
     { label: 'Status', fieldName: 'Status__c', editable: true },
     { label: 'Comments', fieldName: 'Comments__c', type: 'text' },

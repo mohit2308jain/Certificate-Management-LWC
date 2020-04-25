@@ -6,6 +6,7 @@
                 <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
                     <div class="addVou">
                         <form>
+
                             <lightning-input-field field-name={name_field} required>
                             </lightning-input-field>
         
@@ -77,7 +78,7 @@
                             <dd class="slds-item_detail slds-truncate">{record.Cost__c}</dd>
 
                             <dt class="slds-item_label slds-truncate" title="v">Certification :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Certification__c}</dd>
+                            <dd class="slds-item_detail slds-truncate">{record.Certification__r.Name}</dd>
 
                             <dt class="slds-item_label slds-truncate" title="Validity__c">Validity :</dt>
                             <dd class="slds-item_detail slds-truncate">
