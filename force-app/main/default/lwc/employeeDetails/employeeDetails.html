@@ -26,12 +26,16 @@
                         
                             <lightning-input label="Comments" onchange={handleChanges} 
                             placeholder="Any Comments"></lightning-input>
+                            
+                            <div class="btn">
 
-                            <lightning-button label="Add Employee" variant="brand" 
-                            onclick={createEmployee}></lightning-button>
+                                <lightning-button class="btn-1" label="Add Employee" variant="brand" 
+                                onclick={createEmployee}></lightning-button>
 
-                            <lightning-button label="Reset" variant="destructive" 
-                            onclick={clear}></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" 
+                                onclick={clear}></lightning-button>
+
+                            </div>
                         </form>
 
                     </div>

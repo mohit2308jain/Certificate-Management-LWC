@@ -1,7 +1,7 @@
 <template>
     <lightning-tabset>
         <lightning-tab label="Add Certification">
-            <lightning-card title="Add a Certification" icon-name="standard:knowledge">
+            <lightning-card title="Add Certification" icon-name="standard:knowledge">
                 <lightning-record-edit-form object-api-name="Certification__c">
                     <div class="addCert">
                         <form>
@@ -14,12 +14,16 @@
         
                             <lightning-input label="Comments" onchange={handleChanges}
                             placeholder="Any Comments"></lightning-input>
-        
-                            <lightning-button label="Add Certification"  variant="brand"
-                            onclick={createCertification} ></lightning-button>
-        
-                            <lightning-button label="Reset" variant="destructive"
-                            onclick={clear} ></lightning-button>
+
+                            <div class="btn">
+
+                                <lightning-button class="btn-1" label="Add Certification"  variant="brand"
+                                onclick={createCertification} ></lightning-button>
+            
+                                <lightning-button class="btn-1" label="Reset" variant="destructive"
+                                onclick={clear} ></lightning-button>
+
+                            </div>
         
                         </form>
                     </div>

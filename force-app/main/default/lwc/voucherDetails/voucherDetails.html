@@ -2,7 +2,7 @@
     <lightning-tabset>
         <lightning-tab label="Add Vouchers">
 
-            <lightning-card title="Add a Voucher" icon-name="standard:partner_marketing_budget">
+            <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
                 <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
                     <div class="addVou">
                         <form>
@@ -21,11 +21,14 @@
         
                             <lightning-input-field field-name={comments_field}>
                             </lightning-input-field>
-        
-                            <lightning-button type="submit" variant="brand" label="Add Voucher"></lightning-button>
-        
-                            <lightning-button label="Reset" variant="destructive" 
-                            onclick={clear}></lightning-button>
+
+                            <div class="btn">
+
+                                <lightning-button class="btn-1" type="submit" variant="brand" label="Add Voucher"></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
+
+                            </div>
+                
                         </form>
                     </div>
                 </lightning-record-edit-form>

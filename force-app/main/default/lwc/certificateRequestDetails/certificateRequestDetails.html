@@ -1,7 +1,7 @@
 <template>
     <lightning-tabset>
         <lightning-tab label="Add Certification Request">
-            <lightning-card title="Add a Certification Request" icon-name="standard:partner_fund_request">
+            <lightning-card title="Add Certification Request" icon-name="standard:partner_fund_request">
                 <lightning-record-edit-form object-api-name="Certification_Request__c" onsuccess={createRequest}>
                     <div class="addCR">
                         <form>
@@ -19,11 +19,13 @@
         
                             <lightning-input-field field-name={comments_field} placeholder="Any Comments">
                             </lightning-input-field>
+                            
+                            <div class="btn">
+                                <lightning-button class="btn-1" type="submit" variant="brand" label="Add Request"></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
+                            </div>
         
-                            <lightning-button type="submit" variant="brand" label="Add Request"></lightning-button>
-        
-                            <lightning-button label="Reset" variant="destructive" 
-                            onclick={clear}></lightning-button>
+                            
                         </form>
                     </div>
                 </lightning-record-edit-form>

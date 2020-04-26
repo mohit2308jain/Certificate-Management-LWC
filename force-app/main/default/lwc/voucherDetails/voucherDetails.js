@@ -47,12 +47,6 @@ const COLS = [
     }
 ];
 
-/*
-const FI = [
-    'Certification__c.Name'
-];
-*/
-
 export default class VoucherDetails extends LightningElement {
     name_field = VoucherName;
     //cost_field = VoucherCost;
