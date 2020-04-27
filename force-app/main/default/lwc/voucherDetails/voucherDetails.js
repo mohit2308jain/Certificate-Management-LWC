@@ -57,7 +57,7 @@ export default class VoucherDetails extends LightningElement {
 
     createVoucher = (event) => {
         this.dispatchEvent(new ShowToastEvent({
-            title: 'Voila',
+            title: 'Success',
             message: 'Voucher Created !',
             variant: 'success'
         }));

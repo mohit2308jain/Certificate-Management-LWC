@@ -84,6 +84,11 @@ export default class CertificateRequestDetails extends LightningElement {
         if(event.detail.action.label==='Show') {
             console.log('clicked View button');
             this.record = row;
+            if(this.record.Voucher__r == null){
+                this.record.Voucher__r = '';
+            }
+            console.log(this.record.Voucher__r);
+            console.log(this.requests.data);
             this.openModal();
         } else if (event.detail.action.label==='remove') {
             console.log('clicked Delete button');
