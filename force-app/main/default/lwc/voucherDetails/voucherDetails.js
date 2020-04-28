@@ -6,10 +6,8 @@ import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
 
-import Certification_Object from '@salesforce/schema/Certification__c';
-import CertificateName from '@salesforce/schema/Certification__c.Name';
-import CertificateCost from '@salesforce/schema/Certification__c.Cost__c';
 import Voucher_Object from '@salesforce/schema/Voucher__c';
+import VoucherRecId from '@salesforce/schema/Voucher__c.Id';
 import VoucherName from '@salesforce/schema/Voucher__c.Name';
 import VoucherCost from '@salesforce/schema/Voucher__c.Cost__c';
 import VoucherValidity from '@salesforce/schema/Voucher__c.Validity__c';
@@ -109,38 +107,47 @@ export default class VoucherDetails extends LightningElement {
 
     handleSave = (event) =>  {
 
-        const recoredInputs = event.detail.draftValues.slice().map((draft) => {
-            const fields = Object.assign({}, draft);
-            return { fields };
-        });
+        let fields = {};
 
-        const promises = recoredInputs.map((recordInput) => {
-            updateRecord(recordInput)
-        });
+        const len = event.detail.draftValues.length;
 
-        Promise.all(promises).then((vou) => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Voucher updated',
-                    variant: 'success'
-                })
-            );
-            // Clear all draft values
-            this.draftValues = [];
+        for(let i=0;i<len;i++){
+            fields = {};
 
-            // Display fresh data in the datatable
-            //return refreshApex(this.vouchers);
-            location.reload();
-        }).catch(error => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error creating record',
-                    message: event.body.message,
-                    variant: 'error'
-                })
-            );
-        });
+            fields[VoucherRecId.fieldApiName] = event.detail.draftValues[i].Id;
+            fields[VoucherName.fieldApiName] = event.detail.draftValues[i].Name;
+            fields[VoucherActive.fieldApiName] = event.detail.draftValues[i].Active__c;
+            fields[VoucherComments.fieldApiName] = event.detail.draftValues[i].Comments__c;
+            console.log(fields);
+            
+            if(i==(len-1)){
+                updateRecord({fields})
+                .then(() => {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Voucher updated',
+                            variant: 'Success'
+                        })
+                    );
+
+                    this.draftValues = [];
+                    location.reload();
+                    //return refreshApex(this.certification);
+                }).catch(error => {
+                    this.dispatchEvent(
+                        new ShowToastEvent ({
+                            title: 'Error creating record',
+                            message: error.body.message,
+                            variant: 'error'
+                        })
+                    );
+                });
+            }
+            else{
+                updateRecord({fields})
+            }   
+        }
     }
 
     deleteVouchers = (currRow) => {

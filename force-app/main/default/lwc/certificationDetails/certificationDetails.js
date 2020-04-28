@@ -7,6 +7,7 @@ import { refreshApex } from '@salesforce/apex';
 import getCertificationList from '@salesforce/apex/CertificationController.getCertificationList';
 
 import Certification_Object from '@salesforce/schema/Certification__c';
+import CertificateRecId from '@salesforce/schema/Certification__c.Id';
 import CertificateName from '@salesforce/schema/Certification__c.Name';
 import CertificateCost from '@salesforce/schema/Certification__c.Cost__c';
 import CertificateComments from '@salesforce/schema/Certification__c.Comments__c';
@@ -125,39 +126,47 @@ export default class CertificationDetails extends LightningElement {
     }
 
     handleSave = (event) =>  {
+        let fields = {};
 
-        const recoredInputs = event.detail.draftValues.slice().map((draft) => {
-            const fields = Object.assign({}, draft);
-            return { fields };
-        });
+        const len = event.detail.draftValues.length;
 
-        const promises = recoredInputs.map((recordInput) => {
-            updateRecord(recordInput)
-        });
+        for(let i=0;i<len;i++){
+            fields = {};
 
-        Promise.all(promises).then((cert) => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Certification updated',
-                    variant: 'success'
-                })
-            );
-            // Clear all draft values
-            this.draftValues = [];
+            fields[CertificateRecId.fieldApiName] = event.detail.draftValues[i].Id;
+            fields[CertificateName.fieldApiName] = event.detail.draftValues[i].Name;
+            fields[CertificateCost.fieldApiName] = event.detail.draftValues[i].Cost__c;
+            fields[CertificateComments.fieldApiName] = event.detail.draftValues[i].Comments__c;
+            console.log(fields);
+            
+            if(i==(len-1)){
+                updateRecord({fields})
+                .then(() => {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Certification updated',
+                            variant: 'Success'
+                        })
+                    );
 
-            // Display fresh data in the datatable
-            //return refreshApex(this.certification);
-            location.reload();
-        }).catch(error => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error creating record',
-                    message: event.body.message,
-                    variant: 'error'
-                })
-            );
-        });
+                    this.draftValues = [];
+                    location.reload();
+                    //return refreshApex(this.certification);
+                }).catch(error => {
+                    this.dispatchEvent(
+                        new ShowToastEvent ({
+                            title: 'Error creating record',
+                            message: error.body.message,
+                            variant: 'error'
+                        })
+                    );
+                });
+            }
+            else{
+                updateRecord({fields});
+            }   
+        }
     }
 
     deleteCertification = (currRow) => {

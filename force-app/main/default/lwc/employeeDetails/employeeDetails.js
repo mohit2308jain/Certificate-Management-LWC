@@ -7,7 +7,7 @@ import { refreshApex } from '@salesforce/apex';
 import getEmployeeList from '@salesforce/apex/EmployeeController.getEmployeeList';
 
 import Employee_Object from '@salesforce/schema/Employee__c';
-import ID_FIELD from '@salesforce/schema/Employee__c.Id';
+import EmployeeRecId from '@salesforce/schema/Employee__c.Id';
 import IdField from '@salesforce/schema/Employee__c.Emp_ID__c';
 import EmployeeName from '@salesforce/schema/Employee__c.Name';
 import EmployeeEmail from '@salesforce/schema/Employee__c.Email__c';
@@ -156,42 +156,53 @@ export default class EmployeeDetails extends LightningElement {
     }
 
 
-    
-
     handleSave = (event) =>  {
 
-        const recoredInputs = event.detail.draftValues.slice().map((draft) => {
-            const fields = Object.assign({}, draft);
-            return { fields };
-        });
+        let fields = {};
 
-        const promises = recoredInputs.map((recordInput) => {
-            updateRecord(recordInput)
-        });
+        const len = event.detail.draftValues.length;
 
-        Promise.all(promises).then((emp) => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Employee updated',
-                    variant: 'success'
-                })
-            );
-            // Clear all draft values
-            this.draftValues = [];
+        for(let i=0;i<len;i++){
+            fields = {};
 
-            // Display fresh data in the datatable
-            //return refreshApex(this.employee);
-            location.reload();
-        }).catch(error => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Error creating record',
-                    message: event.body.message,
-                    variant: 'error'
-                })
-            );
-        });
+            fields[EmployeeRecId.fieldApiName] = event.detail.draftValues[i].Id;
+            fields[EmployeeName.fieldApiName] = event.detail.draftValues[i].Name;
+            fields[EmployeeEmail.fieldApiName] = event.detail.draftValues[i].Email__c;
+            fields[PrimarySkill.fieldApiName] = event.detail.draftValues[i].Primary_Skill__c;
+            fields[SecondarySkill.fieldApiName] = event.detail.draftValues[i].Secondary_Skill__c;
+            fields[EmployeeExperience.fieldApiName] = event.detail.draftValues[i].Experience__c;
+            fields[EmployeeCompany.fieldApiName] = event.detail.draftValues[i].Company_Name__c;
+            fields[EmployeeComments.fieldApiName] = event.detail.draftValues[i].Comments__c;
+            console.log(fields);
+            
+            if(i==(len-1)){
+                updateRecord({fields})
+                .then(() => {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Success',
+                            message: 'Employee updated',
+                            variant: 'Success'
+                        })
+                    );
+
+                    this.draftValues = [];
+                    location.reload();
+                    //return refreshApex(this.certification);
+                }).catch(error => {
+                    this.dispatchEvent(
+                        new ShowToastEvent ({
+                            title: 'Error creating record',
+                            message: error.body.message,
+                            variant: 'error'
+                        })
+                    );
+                });
+            }
+            else{
+                updateRecord({fields})
+            }   
+        }
     }
 
     deleteEmployee = (currRow) => {
