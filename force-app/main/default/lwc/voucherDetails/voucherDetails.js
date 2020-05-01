@@ -5,6 +5,7 @@ import { updateRecord } from 'lightning/uiRecordApi';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
+import getVoucher from '@salesforce/apex/VoucherController.getVoucher';
 
 import Voucher_Object from '@salesforce/schema/Voucher__c';
 import VoucherRecId from '@salesforce/schema/Voucher__c.Id';
@@ -78,6 +79,33 @@ export default class VoucherDetails extends LightningElement {
     recId = '';
     @wire(getVoucherList)
     vouchers;
+
+    searchRecords = (event)  => {
+
+        const searchTerm = event.target.value; 
+        
+        if (searchTerm) {
+            getVoucher( { searchTerm } ).then((result) => { 
+                
+                this.vouchers.data = result;
+            }) 
+            .catch(error => { 
+                this.error = error; 
+            }); 
+        } else if(!searchTerm) 
+        {
+            getVoucherList()
+            .then(result => {
+                this.vouchers.data = result;
+            })
+            .catch(error => {
+                this.error = error;
+            })
+        }
+        else{
+            this.vouchers = undefined; 
+        }
+    }
 
     handleRowAction(event) {
 

@@ -1,16 +1,7 @@
 import { LightningElement, wire, track } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { createRecord, getRecord } from 'lightning/uiRecordApi';
-import { updateRecord } from 'lightning/uiRecordApi';
-import { deleteRecord } from 'lightning/uiRecordApi';
-import { refreshApex } from '@salesforce/apex';
 import getCertificationList from '@salesforce/apex/CertificationController.getCertificationList';
+import getCertification from '@salesforce/apex/CertificationController.getCertification';
 
-import Certification_Object from '@salesforce/schema/Certification__c';
-import CertificateRecId from '@salesforce/schema/Certification__c.Id';
-import CertificateName from '@salesforce/schema/Certification__c.Name';
-import CertificateCost from '@salesforce/schema/Certification__c.Cost__c';
-import CertificateComments from '@salesforce/schema/Certification__c.Comments__c';
 
 const COLS = [
     { label: 'Certification Id', fieldName: 'Cert_Id__c' },
@@ -40,6 +31,33 @@ export default class CertificationDetails extends LightningElement {
     @track recId;
     @wire(getCertificationList)
     certification;
+
+    searchRecords = (event)  => {
+
+        const searchTerm = event.target.value; 
+        
+        if (searchTerm) {
+            getCertification( { searchTerm } ).then((result) => { 
+                
+                this.certification.data = result;
+            }) 
+            .catch(error => { 
+                this.error = error; 
+            }); 
+        } else if(!searchTerm) 
+        {
+            getCertificationList()
+            .then(result => {
+                this.certification.data = result;
+            })
+            .catch(error => {
+                this.error = error;
+            })
+        }
+        else{
+            this.certification = undefined; 
+        }
+    }
 
 
     handleRowAction(event) {

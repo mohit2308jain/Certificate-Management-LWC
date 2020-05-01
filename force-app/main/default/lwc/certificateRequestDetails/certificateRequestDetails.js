@@ -5,6 +5,7 @@ import { updateRecord } from 'lightning/uiRecordApi';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getRequestsList from '@salesforce/apex/RequestController.getRequestsList';
+import getRequest from '@salesforce/apex/RequestController.getRequest';
 
 import Certification_Request_Object from '@salesforce/schema/Certification_Request__c';
 import CertificationReqStatus from '@salesforce/schema/Certification_Request__c.Status__c';
@@ -16,9 +17,9 @@ import CertificationReqEmployee from '@salesforce/schema/Certification_Request__
 
 const COLS = [
     { label: 'Req Id', fieldName: 'Name' },
-    //{ label: 'Certification', fieldName: 'Certification__c'},
-    //{ label: 'Employee', fieldName: 'Employee__c' },
-    //{ label: 'Voucher', fieldName: 'Voucher__c', },
+    { label: 'Certification', fieldName: 'Certification__c'},
+    { label: 'Employee', fieldName: 'Employee__c' },
+    { label: 'Voucher', fieldName: 'Voucher__c', },
     { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
     { label: 'Status', fieldName: 'Status__c', editable: true },
     { label: 'Comments', fieldName: 'Comments__c', type: 'text' },
@@ -70,11 +71,74 @@ export default class CertificateRequestDetails extends LightningElement {
     @track error;
     @track columns = COLS;
     @track draftValues = [];
+    @track requests;
     selected = [];
+    req;
 
     @track recId;
     @wire(getRequestsList)
-    requests;
+    Certification_Request__c(result) {
+        this.handleDataToShow(result);
+    }
+
+    handleDataToShow = (result) => {
+        this.req = result;
+        console.log(result);
+        if (result.data) {
+            let dataToShow = [];
+            result.data.forEach((res) => {
+                let show = {};
+                show.Id = res.Id;
+                show.Name = res.Name;
+                show.Certification__c = res.Certification__r.Name;
+                show.Employee__c = res.Employee__r.Name;
+                if(res.Voucher__r != null){
+                    show.Voucher__c = res.Voucher__r.Name;
+                }
+                else{
+                    show.Voucher__c = '';
+                }
+                show.Due_Date__c = res.Due_Date__c;
+                show.Status__c = res.Status__c;
+                show.Comments__c = res.Comments__c;
+                dataToShow.push(show);
+            });
+            this.requests = dataToShow;
+            this.error = undefined;
+        } else if (result.error) {
+            this.requests = undefined;
+            this.error = result.error;
+        }
+    }
+
+    searchRecords = (event) => { 
+        
+        const searchTerm = event.target.value; 
+        console.log(searchTerm);
+        if(searchTerm){
+            getRequest( { searchTerm } ).then((result) => {
+                this.handleDataToShow(result);
+                return refreshApex(this.requests);
+            }) 
+            .catch(error => { 
+                this.error = error; 
+            }); 
+        } 
+        else if(!searchTerm) 
+        {
+            getRequestsList()
+            .then(result => {
+                this.handleDataToShow(result);
+            }) 
+            .catch(error => {
+                this.error = error;
+            })
+        }
+        else{
+            this.requests = undefined; 
+        }
+    }
+
 
     handleRowAction(event) {
 
@@ -84,11 +148,7 @@ export default class CertificateRequestDetails extends LightningElement {
         if(event.detail.action.label==='Show') {
             console.log('clicked View button');
             this.record = row;
-            if(this.record.Voucher__r == null){
-                this.record.Voucher__r = '';
-            }
-            console.log(this.record.Voucher__r);
-            console.log(this.requests.data);
+            console.log(this.requests);
             this.openModal();
         } else if (event.detail.action.label==='remove') {
             console.log('clicked Delete button');
@@ -154,7 +214,7 @@ export default class CertificateRequestDetails extends LightningElement {
                     })
                 );
                 
-                return refreshApex(this.requests);
+                return refreshApex(this.req);
                 location.reload();
             })
             .catch(error => {

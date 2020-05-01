@@ -1,6 +1,10 @@
 <template>
     <template if:true={certification.data}>
-        <lightning-card title="Certification List" icon-name="custom:custom63">
+        <lightning-card title="Certification List">
+            <div class="searchField">
+                <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search"  placeholder="Enter Certification Name">
+                </lightning-input>
+            </div>
             <lightning-datatable key-field="Id"
                 data={certification.data}
                 columns={columns}

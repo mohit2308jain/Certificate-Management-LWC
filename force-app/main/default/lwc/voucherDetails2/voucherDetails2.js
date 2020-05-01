@@ -1,19 +1,6 @@
 import { LightningElement, wire, track, api } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { createRecord, getRecord } from 'lightning/uiRecordApi';
-import { updateRecord } from 'lightning/uiRecordApi';
-import { deleteRecord } from 'lightning/uiRecordApi';
-import { refreshApex } from '@salesforce/apex';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
-
-import Voucher_Object from '@salesforce/schema/Voucher__c';
-import VoucherRecId from '@salesforce/schema/Voucher__c.Id';
-import VoucherName from '@salesforce/schema/Voucher__c.Name';
-import VoucherCost from '@salesforce/schema/Voucher__c.Cost__c';
-import VoucherValidity from '@salesforce/schema/Voucher__c.Validity__c';
-import VoucherActive from '@salesforce/schema/Voucher__c.Active__c';
-import VouherCertification from '@salesforce/schema/Voucher__c.Certification__c';
-import VoucherComments from '@salesforce/schema/Voucher__c.Comments__c';
+import getVoucher from '@salesforce/apex/VoucherController.getVoucher';
 
 const COLS = [
     { label: 'Voucher Id', fieldName: 'Voucher_Id__c' },
@@ -45,6 +32,33 @@ export default class VoucherDetails extends LightningElement {
     
     @wire(getVoucherList)
     vouchers;
+
+    searchRecords = (event)  => {
+
+        const searchTerm = event.target.value; 
+        
+        if (searchTerm) {
+            getVoucher( { searchTerm } ).then((result) => { 
+                
+                this.vouchers.data = result;
+            }) 
+            .catch(error => { 
+                this.error = error; 
+            }); 
+        } else if(!searchTerm) 
+        {
+            getVoucherList()
+            .then(result => {
+                this.vouchers.data = result;
+            })
+            .catch(error => {
+                this.error = error;
+            })
+        }
+        else{
+            this.vouchers = undefined; 
+        }
+    }
 
     handleRowAction(event) {
 

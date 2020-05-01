@@ -5,6 +5,7 @@ import { updateRecord } from 'lightning/uiRecordApi';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 import getEmployeeList from '@salesforce/apex/EmployeeController.getEmployeeList';
+import getEmployee from '@salesforce/apex/EmployeeController.getEmployee';
 
 import Employee_Object from '@salesforce/schema/Employee__c';
 import EmployeeRecId from '@salesforce/schema/Employee__c.Id';
@@ -130,6 +131,33 @@ export default class EmployeeDetails extends LightningElement {
     @track recId;
     @wire(getEmployeeList)
     employee;
+
+    searchRecords = (event)  => {
+
+        const searchTerm = event.target.value; 
+        
+        if (searchTerm) {
+            getEmployee( { searchTerm } ).then((result) => { 
+                
+                this.employee.data = result;
+            }) 
+            .catch(error => { 
+                this.error = error; 
+            }); 
+        } else if(!searchTerm) 
+        {
+            getEmployeeList()
+            .then(result => {
+                this.employee.data = result;
+            })
+            .catch(error => {
+                this.error = error;
+            })
+        }
+        else{
+            this.employee = undefined; 
+        }
+    }
 
     handleRowAction(event) {
 

@@ -38,8 +38,12 @@
 
         <lightning-tab label="List of Vouchers">
 
-            <template if:true={vouchers.data}>
-                <lightning-card label="Voucher List" icon-name="custom:custom63">
+            <template if:true={vouchers}>
+                <lightning-card title="Voucher List">
+                    <div class="searchField">
+                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
+                        </lightning-input>
+                    </div>
                     <lightning-datatable key-field="Id"
                         data={vouchers.data}
                         columns={columns}

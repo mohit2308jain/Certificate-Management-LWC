@@ -44,8 +44,12 @@
             </lightning-card>
     </lightning-tab>
     <lightning-tab label="List of Employees">
-        <template if:true={employee.data}>
-            <lightning-card title="Employee List" icon-name="custom:custom63">
+        <template if:true={employee}>
+            <lightning-card title="Employee List">
+                <div class="searchField">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
+                    </lightning-input>
+                </div>
                 <lightning-datatable key-field="Id"
                 data={employee.data}
                 columns={columns}
