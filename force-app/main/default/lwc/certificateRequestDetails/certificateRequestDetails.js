@@ -78,15 +78,19 @@ export default class CertificateRequestDetails extends LightningElement {
     @track recId;
     @wire(getRequestsList)
     Certification_Request__c(result) {
-        this.handleDataToShow(result);
+        this.req = result;
+        if (result.data) {
+            this.handleDataToShow(result.data);
+            this.error = undefined;
+        } else if (result.error) {
+            this.requests = undefined;
+            this.error = result.error;
+        }
     }
 
     handleDataToShow = (result) => {
-        this.req = result;
-        console.log(result);
-        if (result.data) {
-            let dataToShow = [];
-            result.data.forEach((res) => {
+        let dataToShow = [];
+            result.forEach((res) => {
                 let show = {};
                 show.Id = res.Id;
                 show.Name = res.Name;
@@ -104,11 +108,6 @@ export default class CertificateRequestDetails extends LightningElement {
                 dataToShow.push(show);
             });
             this.requests = dataToShow;
-            this.error = undefined;
-        } else if (result.error) {
-            this.requests = undefined;
-            this.error = result.error;
-        }
     }
 
     searchRecords = (event) => { 
@@ -116,9 +115,10 @@ export default class CertificateRequestDetails extends LightningElement {
         const searchTerm = event.target.value; 
         console.log(searchTerm);
         if(searchTerm){
+            
             getRequest( { searchTerm } ).then((result) => {
+                
                 this.handleDataToShow(result);
-                return refreshApex(this.requests);
             }) 
             .catch(error => { 
                 this.error = error; 
@@ -185,11 +185,8 @@ export default class CertificateRequestDetails extends LightningElement {
                     variant: 'success'
                 })
             );
-            // Clear all draft values
             this.draftValues = [];
 
-            // Display fresh data in the datatable
-            //return refreshApex(this.requests);
             location.reload();
         }).catch(error => {
             this.dispatchEvent(
