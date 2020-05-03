@@ -1,121 +1,118 @@
 <template>
-    <lightning-tabset>
-        <lightning-tab label="Add Vouchers">
+    <template if:true={showCreateForm}>
+        <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
+            <lightning-button label="Show Vouchers" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
+                <div class="addVou">
+                    <form>
 
-            <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
-                <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
-                    <div class="addVou">
-                        <form>
+                        <lightning-input-field field-name={name_field} required>
+                        </lightning-input-field>
 
-                            <lightning-input-field field-name={name_field} required>
-                            </lightning-input-field>
-        
-                            <lightning-input-field field-name={validity_field}>
-                            </lightning-input-field>
-        
-                            <lightning-input-field field-name={active_field} required>
-                            </lightning-input-field>
-        
-                            <lightning-input-field field-name={certification_field}>
-                            </lightning-input-field>
-        
-                            <lightning-input-field field-name={comments_field}>
-                            </lightning-input-field>
+                        <lightning-input-field field-name={validity_field}>
+                        </lightning-input-field>
 
-                            <div class="btn">
+                        <lightning-input-field field-name={active_field} required>
+                        </lightning-input-field>
 
-                                <lightning-button class="btn-1" type="submit" variant="brand" label="Add Voucher"></lightning-button>
-                                <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
+                        <lightning-input-field field-name={certification_field}>
+                        </lightning-input-field>
 
-                            </div>
-                
-                        </form>
-                    </div>
-                </lightning-record-edit-form>
-            </lightning-card>
+                        <lightning-input-field field-name={comments_field}>
+                        </lightning-input-field>
 
-        </lightning-tab>
+                        <div class="btn">
 
-        <lightning-tab label="List of Vouchers">
+                            <lightning-button class="btn-1" type="submit" variant="brand" label="Add Voucher"></lightning-button>
+                            <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
 
-            <template if:true={vouchers}>
-                <lightning-card title="Voucher List">
-                    <div class="searchField">
-                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
-                        </lightning-input>
-                    </div>
-                    <lightning-datatable key-field="Id"
-                        data={vouchers.data}
-                        columns={columns}
-                        onrowaction={handleRowAction}
-                        onsave={handleSave}
-                        draft-values={draftValues}
-                        hide-checkbox-column="true">
-                    
-                    </lightning-datatable>
-                </lightning-card>
-                
-            </template>
-
-            <template if:true={bShowModal}>
-                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-                <div class="slds-modal__container">
-                      <!-- modal header start -->
-                    <header class="slds-modal__header">
-                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
-                        <lightning-icon icon-name="utility:close"
-                            alternative-text="close"
-                            variant="inverse"
-                            size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
-                        </button>
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Voucher Detail</h2>
-                    </header>
-                    <!-- modal body start -->
-                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-                        <dl class="slds-list_horizontal slds-wrap">
-
-                            <dt class="slds-item_label slds-truncate" title="Voucher_Id__c">Voucher Id :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Voucher_Id__c}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Name">Name :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Name}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Cost__c">Cost :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Cost__c}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="v">Certification :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Certification__r.Name}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Validity__c">Validity :</dt>
-                            <dd class="slds-item_detail slds-truncate">
-                                <lightning-formatted-date-time value={record.Validity__c}>
-                                </lightning-formatted-date-time>
-                            </dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Active__c">Active :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Active__c}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Comments__c">Comments :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Comments__c}</dd>
-                        </dl>
-                    </div>
-                    <!-- modal footer start-->
-                    <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
-                    </footer>
+                        </div>
+            
+                    </form>
                 </div>
-                </section>
-                <div class="slds-backdrop slds-backdrop_open"></div>
+            </lightning-record-edit-form>
+        </lightning-card>
+    </template>
+
+    <template if:true={showList}>
+
+        <template if:true={vouchers}>
+            <lightning-card title="Voucher List">
+                <lightning-button label="New Voucher" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
+                <div class="searchField">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
+                    </lightning-input>
+                </div>
+                <lightning-datatable key-field="Id"
+                    data={vouchers.data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    onsave={handleSave}
+                    draft-values={draftValues}
+                    hide-checkbox-column="true">
                 
-             </template>
-            <template if:true={employee.error} onerror={handleError}>
-                <!-- handle Apex error -->
-            </template>
+                </lightning-datatable>
+            </lightning-card>
+            
+        </template>
 
+        <template if:true={bShowModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                    <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Voucher Detail</h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <dl class="slds-list_horizontal slds-wrap">
 
-        </lightning-tab>
-    </lightning-tabset>
+                        <dt class="slds-item_label slds-truncate" title="Voucher_Id__c">Voucher Id :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Voucher_Id__c}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Name">Name :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Name}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Cost__c">Cost :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Cost__c}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="v">Certification :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Certification__r.Name}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Validity__c">Validity :</dt>
+                        <dd class="slds-item_detail slds-truncate">
+                            <lightning-formatted-date-time value={record.Validity__c}>
+                            </lightning-formatted-date-time>
+                        </dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Active__c">Active :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Active__c}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Comments__c">Comments :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Comments__c}</dd>
+                    </dl>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                </footer>
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            
+        </template>
+        <template if:true={employee.error} onerror={handleError}>
+            <!-- handle Apex error -->
+        </template>
+
+    </template>
     
     
 </template>

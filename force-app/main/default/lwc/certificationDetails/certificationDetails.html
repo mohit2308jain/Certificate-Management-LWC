@@ -1,103 +1,102 @@
 <template>
-    <lightning-tabset>
-        <lightning-tab label="Add Certification">
-            <lightning-card title="Add Certification" icon-name="standard:knowledge">
-                <lightning-record-edit-form object-api-name="Certification__c">
-                    <div class="addCert">
-                        <form>
-        
-                            <lightning-input label="Certificate Name" onchange={handleChanges}
-                            placeholder="Enter the Certification Name" required></lightning-input>
-
-                            <lightning-input label="Certificate Cost" onchange={handleChanges} type="number"
-                            placeholder="Enter the cost of Certification" required></lightning-input>
-        
-                            <lightning-input label="Comments" onchange={handleChanges}
-                            placeholder="Any Comments"></lightning-input>
-
-                            <div class="btn">
-
-                                <lightning-button class="btn-1" label="Add Certification"  variant="brand"
-                                onclick={createCertification} ></lightning-button>
-            
-                                <lightning-button class="btn-1" label="Reset" variant="destructive"
-                                onclick={clear} ></lightning-button>
-
-                            </div>
-        
-                        </form>
-                    </div>
-                </lightning-record-edit-form>
-            </lightning-card>
-        </lightning-tab>
-
-        <lightning-tab label="List of Certifications">
-            <template if:true={certification}>
-                <lightning-card title="Certification List">
-                    <div class="searchField">
-                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification Name">
-                        </lightning-input>
-                    </div>
-                    <lightning-datatable key-field="Id"
-                        data={certification.data}
-                        columns={columns}
-                        onrowaction={handleRowAction}
-                        onsave={handleSave}
-                        draft-values={draftValues}
-                        hide-checkbox-column="true"
-                    >
+    <template if:true={showCreateForm}>
+        <lightning-card title="Add Certification" icon-name="standard:knowledge">
+            <lightning-button label="Show Certifications" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-record-edit-form object-api-name="Certification__c">
+                <div class="addCert">
+                    <form>
     
-                </lightning-datatable>
-                </lightning-card>
-            </template>
+                        <lightning-input label="Certificate Name" onchange={handleChanges}
+                        placeholder="Enter the Certification Name" required></lightning-input>
+
+                        <lightning-input label="Certificate Cost" onchange={handleChanges} type="number"
+                        placeholder="Enter the cost of Certification" required></lightning-input>
     
-            <template if:true={bShowModal}>
-                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-                <div class="slds-modal__container">
-                      <!-- modal header start -->
-                    <header class="slds-modal__header">
-                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
-                        <lightning-icon icon-name="utility:close"
-                            alternative-text="close"
-                            variant="inverse"
-                            size="small" ></lightning-icon>
-                        <span class="slds-assistive-text">Close</span>
-                        </button>
-                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Certification Detail</h2>
-                    </header>
-                    <!-- modal body start -->
-                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <lightning-textarea label="Comments" onchange={handleChanges}
+                        placeholder="Any Comments"></lightning-textarea>
+                        
+                        <div class="btn">
 
-                        <dl class="slds-list_horizontal slds-wrap">
+                            <lightning-button class="btn-1" label="Add Certification"  variant="brand"
+                            onclick={createCertification} ></lightning-button>
+        
+                            <lightning-button class="btn-1" label="Reset" variant="destructive"
+                            onclick={clear} ></lightning-button>
 
-                            <dt class="slds-item_label slds-truncate" title="Cert_Id__c">Certification Id :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Cert_Id__c}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Name">Name :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Name}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Cost__c">Cost :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Cost__c}</dd>
-
-                            <dt class="slds-item_label slds-truncate" title="Comments__c">Comments :</dt>
-                            <dd class="slds-item_detail slds-truncate">{record.Comments__c}</dd>
-                        </dl>
-                    </div>
-                    <!-- modal footer start-->
-                    <footer class="slds-modal__footer">
-                        <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
-                    </footer>
+                        </div>
+    
+                    </form>
                 </div>
-                </section>
-                <div class="slds-backdrop slds-backdrop_open"></div>
-                
-             </template>
-            <template if:true={employee.error} onerror={handleError}>
-                <!-- handle Apex error -->
-            </template>
+            </lightning-record-edit-form>
+        </lightning-card>
+    </template>
 
-        </lightning-tab>
-    </lightning-tabset>
+    <template if:true={showList}>
+        <template if:true={certification}>
+            <lightning-card title="Certification List">
+                <lightning-button label="New Certification" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
+                <div class="searchField">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification Name">
+                    </lightning-input>
+                </div>
+                <lightning-datatable key-field="Id"
+                    data={certification.data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    onsave={handleSave}
+                    draft-values={draftValues}
+                    hide-checkbox-column="true"
+                >
+
+            </lightning-datatable>
+            </lightning-card>
+        </template>
+
+        <template if:true={bShowModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                    <!-- modal header start -->
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Certification Detail</h2>
+                </header>
+                <!-- modal body start -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <dl class="slds-list_horizontal slds-wrap">
+
+                        <dt class="slds-item_label slds-truncate" title="Cert_Id__c">Certification Id :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Cert_Id__c}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Name">Name :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Name}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Cost__c">Cost :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Cost__c}</dd>
+
+                        <dt class="slds-item_label slds-truncate" title="Comments__c">Comments :</dt>
+                        <dd class="slds-item_detail slds-truncate">{record.Comments__c}</dd>
+                    </dl>
+                </div>
+                <!-- modal footer start-->
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>Cancel</button>
+                </footer>
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+            
+        </template>
+        <template if:true={employee.error} onerror={handleError}>
+            <!-- handle Apex error -->
+        </template>
+    </template>
     
     
 </template>

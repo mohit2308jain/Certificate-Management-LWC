@@ -121,14 +121,15 @@ export default class EmployeeDetails extends LightningElement {
 
     
 
+    @track showCreateForm = false;
+    @track showList = true;
     @track bShowModal = false;
     @track record = {};
     @track error;
     @track columns = COLS;
     @track draftValues = [];
-    selected = [];
-
-    @track recId;
+    
+    
     @wire(getEmployeeList)
     employee;
 
@@ -157,6 +158,15 @@ export default class EmployeeDetails extends LightningElement {
         else{
             this.employee = undefined; 
         }
+    }
+
+    showFormView = (event) => {
+        this.showCreateForm = true;
+        this.showList = false;
+    }
+    showListView = (event) => {
+        this.showList = true;
+        this.showCreateForm = false;
     }
 
     handleRowAction(event) {

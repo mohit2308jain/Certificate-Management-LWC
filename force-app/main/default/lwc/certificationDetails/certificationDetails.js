@@ -54,7 +54,6 @@ export default class CertificationDetails extends LightningElement {
             this.cComments = event.target.value;
         }
         else if(event.target.label == "Certificate Cost"){
-            console.log(event.target.value);
             this.cCost = event.target.value;
         }
     }
@@ -90,14 +89,15 @@ export default class CertificationDetails extends LightningElement {
     }
 
 
+    @track showCreateForm = false;
+    @track showList = true;
     @track bShowModal = false;
     @track record = {};
     @track error;
     @track columns = COLS;
     @track draftValues = [];
-    selected = [];
-
-    @track recId;
+    
+    
     @wire(getCertificationList)
     certification;
 
@@ -126,6 +126,15 @@ export default class CertificationDetails extends LightningElement {
         else{
             this.certification = undefined; 
         }
+    }
+
+    showFormView = (event) => {
+        this.showCreateForm = true;
+        this.showList = false;
+    }
+    showListView = (event) => {
+        this.showList = true;
+        this.showCreateForm = false;
     }
 
 

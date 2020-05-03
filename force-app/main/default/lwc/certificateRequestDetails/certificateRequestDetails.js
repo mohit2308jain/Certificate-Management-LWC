@@ -19,7 +19,7 @@ const COLS = [
     { label: 'Req Id', fieldName: 'Name' },
     { label: 'Certification', fieldName: 'Certification__c'},
     { label: 'Employee', fieldName: 'Employee__c' },
-    { label: 'Voucher', fieldName: 'Voucher__c', },
+    //{ label: 'Voucher', fieldName: 'Voucher__c', },
     { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
     { label: 'Status', fieldName: 'Status__c', editable: true },
     { label: 'Comments', fieldName: 'Comments__c', type: 'text' },
@@ -66,16 +66,17 @@ export default class CertificateRequestDetails extends LightningElement {
         this.template.querySelector('form').reset();
     }
 
+    @track showCreateForm = false;
+    @track showList = true;
     @track bShowModal = false;
     @track record = {};
     @track error;
     @track columns = COLS;
     @track draftValues = [];
     @track requests;
-    selected = [];
     req;
 
-    @track recId;
+
     @wire(getRequestsList)
     Certification_Request__c(result) {
         this.req = result;
@@ -137,6 +138,15 @@ export default class CertificateRequestDetails extends LightningElement {
         else{
             this.requests = undefined; 
         }
+    }
+
+    showFormView = (event) => {
+        this.showCreateForm = true;
+        this.showList = false;
+    }
+    showListView = (event) => {
+        this.showList = true;
+        this.showCreateForm = false;
     }
 
 

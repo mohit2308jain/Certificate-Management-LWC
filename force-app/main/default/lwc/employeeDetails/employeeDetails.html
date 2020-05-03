@@ -1,51 +1,54 @@
 <template>
-    <lightning-tabset>
-        <lightning-tab label="Add Employee">
-            <lightning-card title="Add Employee" icon-name="action:user">
-                <lightning-record-edit-form object-api-name="Employee__c">
-                    <div class="addEmp">
+    <template if:true={showCreateForm}>
+        <lightning-card title="Add Employee" icon-name="action:user">
+            <lightning-button label="Show Employees" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-record-edit-form object-api-name="Employee__c">
+                <div class="addEmp">
 
-                        <form>
-                            <lightning-input label="Name" onchange={handleChanges}
-                            placeholder="Please Enter Employee's Name" required></lightning-input>
+                    <form>
+                        <lightning-input label="Name" onchange={handleChanges}
+                        placeholder="Please Enter Employee's Name" required></lightning-input>
 
-                            <lightning-input label="Company Name" onchange={handleChanges}
-                            placeholder="Please Enter Employee's Company Name" required></lightning-input>
+                        <lightning-input label="Company Name" onchange={handleChanges}
+                        placeholder="Please Enter Employee's Company Name" required></lightning-input>
 
-                            <lightning-input label="Email" onchange={handleChanges} type="email"
-                            placeholder="Please Enter Employee's Email" required></lightning-input>
+                        <lightning-input label="Email" onchange={handleChanges} type="email"
+                        placeholder="Please Enter Employee's Email" required></lightning-input>
 
-                            <lightning-input label="Primary Skill" onchange={handleChanges}
-                            placeholder="Please Enter Employee's Main Skill" required></lightning-input>
+                        <lightning-input label="Primary Skill" onchange={handleChanges}
+                        placeholder="Please Enter Employee's Main Skill" required></lightning-input>
 
-                            <lightning-input label="Secondary Skill" onchange={handleChanges}
-                            placeholder="Please Enter Employee's secondary Skill"></lightning-input>
+                        <lightning-input label="Secondary Skill" onchange={handleChanges}
+                        placeholder="Please Enter Employee's secondary Skill"></lightning-input>
 
-                            <lightning-input label="Experience" onchange={handleChanges} type="number"
-                            placeholder="Please Enter Employee's Experience" required></lightning-input>
+                        <lightning-input label="Experience" onchange={handleChanges} type="number"
+                        placeholder="Please Enter Employee's Experience" required></lightning-input>
+
+                        <lightning-textarea label="Comments" onchange={handleChanges}
+                        placeholder="Any Comments"></lightning-textarea>
                         
-                            <lightning-input label="Comments" onchange={handleChanges} 
-                            placeholder="Any Comments"></lightning-input>
-                            
-                            <div class="btn">
+                        <div class="btn">
 
-                                <lightning-button class="btn-1" label="Add Employee" variant="brand" 
-                                onclick={createEmployee}></lightning-button>
+                            <lightning-button class="btn-1" label="Add Employee" variant="brand" 
+                            onclick={createEmployee}></lightning-button>
 
-                                <lightning-button class="btn-1" label="Reset" variant="destructive" 
-                                onclick={clear}></lightning-button>
+                            <lightning-button class="btn-1" label="Reset" variant="destructive" 
+                            onclick={clear}></lightning-button>
 
-                            </div>
-                        </form>
+                        </div>
+                    </form>
 
-                    </div>
+                </div>
 
-                </lightning-record-edit-form>
-            </lightning-card>
-    </lightning-tab>
-    <lightning-tab label="List of Employees">
+            </lightning-record-edit-form>
+        </lightning-card>
+    </template>
+
+    <template if:true={showList}>
+
         <template if:true={employee}>
             <lightning-card title="Employee List">
+                <lightning-button label="New Employee" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
                 <div class="searchField">
                     <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
                     </lightning-input>
@@ -123,9 +126,6 @@
             <!-- handle Apex error -->
         </template>
 
-        
-
-    </lightning-tab>
-    </lightning-tabset>
+    </template>
     
 </template>

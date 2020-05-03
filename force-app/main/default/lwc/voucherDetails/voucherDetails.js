@@ -19,7 +19,7 @@ import VoucherComments from '@salesforce/schema/Voucher__c.Comments__c';
 const COLS = [
     { label: 'Voucher Id', fieldName: 'Voucher_Id__c' },
     { label: 'Name', fieldName: 'Name', type: 'text', editable: true },
-    { label: 'Cost', fieldName: 'Cost__c', type: 'number', cellAttributes: { alignment: 'left' } },
+    //{ label: 'Cost', fieldName: 'Cost__c', type: 'number', cellAttributes: { alignment: 'left' } },
     //{ label: 'Certification', fieldName: 'Certification__c'},
     { label: 'Validity', fieldName: 'Validity__c', type: 'date'},
     { label: 'Active', fieldName: 'Active__c', type: 'boolean', editable: true},
@@ -68,15 +68,15 @@ export default class VoucherDetails extends LightningElement {
     }
 
 
+    @track showCreateForm = false;
+    @track showList = true;
     @track bShowModal = false;
     @track record = {};
     @track error;
     @track columns = COLS;
     @track draftValues = [];
-    selected = [];
 
     
-    recId = '';
     @wire(getVoucherList)
     vouchers;
 
@@ -105,6 +105,15 @@ export default class VoucherDetails extends LightningElement {
         else{
             this.vouchers = undefined; 
         }
+    }
+
+    showFormView = (event) => {
+        this.showCreateForm = true;
+        this.showList = false;
+    }
+    showListView = (event) => {
+        this.showList = true;
+        this.showCreateForm = false;
     }
 
     handleRowAction(event) {
