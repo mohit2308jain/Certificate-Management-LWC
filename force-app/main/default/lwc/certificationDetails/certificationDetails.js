@@ -7,12 +7,14 @@ import { refreshApex } from '@salesforce/apex';
 import getCertificationList from '@salesforce/apex/CertificationController.getCertificationList';
 import getCertification from '@salesforce/apex/CertificationController.getCertification';
 
+//Importing all neccessary fields from Certification Object.
 import Certification_Object from '@salesforce/schema/Certification__c';
 import CertificateRecId from '@salesforce/schema/Certification__c.Id';
 import CertificateName from '@salesforce/schema/Certification__c.Name';
 import CertificateCost from '@salesforce/schema/Certification__c.Cost__c';
 import CertificateComments from '@salesforce/schema/Certification__c.Comments__c';
 
+//Columns defined to be shown on lightning datatable
 const COLS = [
     { label: 'Certification Id', fieldName: 'Cert_Id__c' },
     { label: 'Name', fieldName: 'Name', type: 'text', editable: true },
@@ -22,8 +24,8 @@ const COLS = [
         typeAttributes: {
             label: 'Show',
             name: 'showRec',
-            iconName: 'action:preview',
-            title: 'Preview',
+            iconName: 'action:info',
+            title: 'Info',
             variant: 'border-filled',
             alternativeText: 'View'
         }
@@ -35,7 +37,7 @@ const COLS = [
             iconName: 'action:delete',
             title: 'Delete',
             variant: 'border-filled',
-            alternativeText: 'View'
+            alternativeText: 'Delete'
         }
     }
 ];
@@ -46,6 +48,7 @@ export default class CertificationDetails extends LightningElement {
     cComments = '';
     cCost = 0;
 
+    //handling the input provided by user
     handleChanges = (event) => {
         if(event.target.label == 'Certificate Name'){
             this.cName = event.target.value;
@@ -58,6 +61,7 @@ export default class CertificationDetails extends LightningElement {
         }
     }
 
+    //Inserting record in the salesforce database
     createCertification = (event) => {
         const fields = {};
         fields[CertificateName.fieldApiName] = this.cName;
@@ -97,10 +101,11 @@ export default class CertificationDetails extends LightningElement {
     @track columns = COLS;
     @track draftValues = [];
     
-    
+    //Using the apex method to fetch the list of records in Certification Object
     @wire(getCertificationList)
     certification;
 
+    //Function used to fetch records according to the value given as input in the searchbar
     searchRecords = (event)  => {
 
         const searchTerm = event.target.value; 
@@ -128,6 +133,7 @@ export default class CertificationDetails extends LightningElement {
         }
     }
 
+    //Functions to show create record form and the list of records on button clicks
     showFormView = (event) => {
         this.showCreateForm = true;
         this.showList = false;
@@ -137,7 +143,7 @@ export default class CertificationDetails extends LightningElement {
         this.showCreateForm = false;
     }
 
-
+    //Function to handle the action when view and delete icons are pressed
     handleRowAction(event) {
 
         const row = event.detail.row;
@@ -154,6 +160,7 @@ export default class CertificationDetails extends LightningElement {
 
     }
 
+    //Functions to open and close the view record modal.
     openModal() {  
         this.bShowModal = true;
     }
@@ -162,6 +169,7 @@ export default class CertificationDetails extends LightningElement {
         this.bShowModal = false;
     }
 
+    //Function to update the records
     handleSave = (event) =>  {
         let fields = {};
 
@@ -206,6 +214,7 @@ export default class CertificationDetails extends LightningElement {
         }
     }
 
+    //Function to delete a particular record when that corresponding record's delete icon is pressed
     deleteCertification = (currRow) => {
 
         deleteRecord(currRow.Id)

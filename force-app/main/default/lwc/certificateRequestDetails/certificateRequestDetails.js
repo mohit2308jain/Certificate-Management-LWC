@@ -7,7 +7,9 @@ import { refreshApex } from '@salesforce/apex';
 import getRequestsList from '@salesforce/apex/RequestController.getRequestsList';
 import getRequest from '@salesforce/apex/RequestController.getRequest';
 
+//Importing all neccessary fields from Certification Request Object.
 import Certification_Request_Object from '@salesforce/schema/Certification_Request__c';
+import CertificationReqRecId from '@salesforce/schema/Certification_Request__c.Id';
 import CertificationReqStatus from '@salesforce/schema/Certification_Request__c.Status__c';
 import CertificationReqDueDate from '@salesforce/schema/Certification_Request__c.Due_Date__c';
 import CertificationReqVoucher from '@salesforce/schema/Certification_Request__c.Voucher__c';
@@ -15,20 +17,18 @@ import CertificationReqCertification from '@salesforce/schema/Certification_Requ
 import CertificationReqComments from '@salesforce/schema/Certification_Request__c.Comments__c';
 import CertificationReqEmployee from '@salesforce/schema/Certification_Request__c.Employee__c';
 
+//Columns defined to be shown on lightning datatable
 const COLS = [
     { label: 'Req Id', fieldName: 'Name' },
     { label: 'Certification', fieldName: 'Certification__c'},
     { label: 'Employee', fieldName: 'Employee__c' },
-    //{ label: 'Voucher', fieldName: 'Voucher__c', },
-    { label: 'Due Date', fieldName: 'Due_Date__c', type: 'date'},
-    { label: 'Status', fieldName: 'Status__c', editable: true },
-    { label: 'Comments', fieldName: 'Comments__c', type: 'text' },
+    { label: 'Status', fieldName: 'Status__c' },
     { label: 'View', type: 'button-icon', initialWidth: 75,
         typeAttributes: {
             label: 'Show',
             name: 'showRec',
-            iconName: 'action:preview',
-            title: 'Preview',
+            iconName: 'action:info',
+            title: 'Info',
             variant: 'border-filled',
             alternativeText: 'View'
         }
@@ -40,7 +40,27 @@ const COLS = [
             iconName: 'action:delete',
             title: 'Delete',
             variant: 'border-filled',
-            alternativeText: 'View'
+            alternativeText: 'Delete'
+        }
+    },
+    { label: 'Passed', type: 'button-icon', initialWidth: 75,
+        typeAttributes: {
+            label: 'ChangeToPassed',
+            name: 'passedRec',
+            iconName: 'action:approval',
+            title: 'Passed',
+            variant: 'border-filled',
+            alternativeText: 'Passed'
+        }
+    },
+    {  type: 'button-icon', initialWidth: 75,
+        typeAttributes: {
+            label: 'ChangeToFailed',
+            name: 'failedRec',
+            iconName: 'action:reject',
+            title: 'Failed',
+            variant: 'border-filled',
+            alternativeText: 'Failed'
         }
     }
 ];
@@ -53,6 +73,7 @@ export default class CertificateRequestDetails extends LightningElement {
     dueDate_field = CertificationReqDueDate;
     comments_field = CertificationReqComments;
 
+    //Inserting record in the salesforce database
     createRequest = (event) => {
         this.dispatchEvent(new ShowToastEvent({
             title: 'Success',
@@ -76,7 +97,7 @@ export default class CertificateRequestDetails extends LightningElement {
     @track requests;
     req;
 
-
+    //Using the apex method to fetch the list of records in Certification Request Object
     @wire(getRequestsList)
     Certification_Request__c(result) {
         this.req = result;
@@ -89,6 +110,7 @@ export default class CertificateRequestDetails extends LightningElement {
         }
     }
 
+    //Function to customize the data to be shown on the lightning datatable
     handleDataToShow = (result) => {
         let dataToShow = [];
             result.forEach((res) => {
@@ -111,6 +133,7 @@ export default class CertificateRequestDetails extends LightningElement {
             this.requests = dataToShow;
     }
 
+    //Function used to fetch records according to the value given as input in the searchbar
     searchRecords = (event) => { 
         
         const searchTerm = event.target.value; 
@@ -140,6 +163,7 @@ export default class CertificateRequestDetails extends LightningElement {
         }
     }
 
+    //Functions to show create record form and the list of records on button clicks
     showFormView = (event) => {
         this.showCreateForm = true;
         this.showList = false;
@@ -150,6 +174,7 @@ export default class CertificateRequestDetails extends LightningElement {
     }
 
 
+    //Function to handle the action when view, delete, passed icons are pressed
     handleRowAction(event) {
 
         const row = event.detail.row;
@@ -163,52 +188,52 @@ export default class CertificateRequestDetails extends LightningElement {
         } else if (event.detail.action.label==='remove') {
             console.log('clicked Delete button');
             this.deleteRequests(row);
+        } else if(event.detail.action.label==='ChangeToPassed'){
+            this.updateStatus(row,'Passed');
+        } else if(event.detail.action.label==='ChangeToFailed'){
+            this.updateStatus(row,'Failed');
         }
 
     }
 
+    //Functions to open and close the view record modal.
     openModal() {  
         this.bShowModal = true;
     }
- 
     closeModal() {    
         this.bShowModal = false;
     }
 
-
-    handleSave = (event) =>  {
-
-        const recoredInputs = event.detail.draftValues.slice().map((draft) => {
-            const fields = Object.assign({}, draft);
-            return { fields };
-        });
-
-        const promises = recoredInputs.map((recordInput) => {
-            updateRecord(recordInput)
-        });
-
-        Promise.all(promises).then((req) => {
+    //Function to update the status of request to passed or failed
+    updateStatus = (currRow, status) => {
+        const fields = {}
+        console.log("hhj")
+        fields[CertificationReqRecId.fieldApiName] = currRow.Id;
+        fields[CertificationReqStatus.fieldApiName] = status;
+         
+        const recordInput = {fields};
+        updateRecord(recordInput).then(() => {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success',
-                    message: 'Request updated',
+                    message: 'Status Updated to ' + status,
                     variant: 'success'
                 })
             );
-            this.draftValues = [];
-
-            location.reload();
+            return refreshApex(this.req);
         }).catch(error => {
             this.dispatchEvent(
                 new ShowToastEvent({
-                    title: 'Error creating record',
-                    message: event.body.message,
+                    title: 'Error',
+                    message: 'Error occured in updating status',
                     variant: 'error'
                 })
             );
-        });
+        })
     }
 
+
+    //Function to delete a particular record when that corresponding record's delete icon is pressed
     deleteRequests = (currRow) => {
 
         deleteRecord(currRow.Id)

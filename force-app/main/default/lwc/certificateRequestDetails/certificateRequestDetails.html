@@ -1,4 +1,5 @@
 <template>
+    <!-- Form for creating records -->
     <template if:true={showCreateForm}>
         <lightning-card title="Add Certification Request" icon-name="standard:partner_fund_request">
             <lightning-button label="Show Requests" variant="brand" onclick={showListView} slot="actions"></lightning-button>
@@ -32,19 +33,20 @@
         </lightning-card>
     </template>
 
+    <!-- Template to show the list of records -->
     <template if:true={showList}>
         <template if:true={requests}>
             <lightning-card title="Request List">
                 <lightning-button label="New Request" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
                 <div class="searchField">
-                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification or Employee Name">
                     </lightning-input>
                 </div>
                 <lightning-datatable key-field="Id"
                 data={requests}
                 columns={columns}
                 onrowaction={handleRowAction}
-                onsave={handleSave}
+                show-row-number-column="true"
                 draft-values={draftValues}
                 hide-checkbox-column="true"
                 >
@@ -53,6 +55,7 @@
             </lightning-card>
         </template>
 
+        <!-- Modal for viewing record data -->
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">

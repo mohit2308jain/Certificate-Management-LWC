@@ -7,6 +7,7 @@ import { refreshApex } from '@salesforce/apex';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
 import getVoucher from '@salesforce/apex/VoucherController.getVoucher';
 
+//Importing all neccessary fields from Voucher Object.
 import Voucher_Object from '@salesforce/schema/Voucher__c';
 import VoucherRecId from '@salesforce/schema/Voucher__c.Id';
 import VoucherName from '@salesforce/schema/Voucher__c.Name';
@@ -16,6 +17,7 @@ import VoucherActive from '@salesforce/schema/Voucher__c.Active__c';
 import VouherCertification from '@salesforce/schema/Voucher__c.Certification__c';
 import VoucherComments from '@salesforce/schema/Voucher__c.Comments__c';
 
+//Columns defined to be shown on lightning datatable
 const COLS = [
     { label: 'Voucher Id', fieldName: 'Voucher_Id__c' },
     { label: 'Name', fieldName: 'Name', type: 'text', editable: true },
@@ -28,8 +30,8 @@ const COLS = [
         typeAttributes: {
             label: 'Show',
             name: 'showRec',
-            iconName: 'action:preview',
-            title: 'Preview',
+            iconName: 'action:info',
+            title: 'Info',
             variant: 'border-filled',
             alternativeText: 'View'
         }
@@ -41,19 +43,19 @@ const COLS = [
             iconName: 'action:delete',
             title: 'Delete',
             variant: 'border-filled',
-            alternativeText: 'View'
+            alternativeText: 'Delete'
         }
     }
 ];
 
 export default class VoucherDetails extends LightningElement {
     name_field = VoucherName;
-    //cost_field = VoucherCost;
     validity_field = VoucherValidity;
     active_field = VoucherActive;
     certification_field = VouherCertification;
     comments_field = VoucherComments;
 
+    //Inserting record in the salesforce database
     createVoucher = (event) => {
         this.dispatchEvent(new ShowToastEvent({
             title: 'Success',
@@ -76,10 +78,11 @@ export default class VoucherDetails extends LightningElement {
     @track columns = COLS;
     @track draftValues = [];
 
-    
+    //Using the apex method to fetch the list of records in Voucher Object
     @wire(getVoucherList)
     vouchers;
 
+    //Function used to fetch records according to the value given as input in the searchbar
     searchRecords = (event)  => {
 
         const searchTerm = event.target.value; 
@@ -107,6 +110,7 @@ export default class VoucherDetails extends LightningElement {
         }
     }
 
+    //Functions to show create record form and the list of records on button clicks
     showFormView = (event) => {
         this.showCreateForm = true;
         this.showList = false;
@@ -116,6 +120,7 @@ export default class VoucherDetails extends LightningElement {
         this.showCreateForm = false;
     }
 
+    //Function to handle the action when view and delete icons are pressed
     handleRowAction(event) {
 
         const row = event.detail.row;
@@ -133,6 +138,7 @@ export default class VoucherDetails extends LightningElement {
         
     }
 
+    //Functions to open and close the view record modal.
     openModal() {  
         this.bShowModal = true;
     }
@@ -141,7 +147,7 @@ export default class VoucherDetails extends LightningElement {
         this.bShowModal = false;
     }
 
-
+    //Function to update the records
     handleSave = (event) =>  {
 
         let fields = {};
@@ -187,6 +193,7 @@ export default class VoucherDetails extends LightningElement {
         }
     }
 
+    //Function to delete a particular record when that corresponding record's delete icon is pressed
     deleteVouchers = (currRow) => {
 
 

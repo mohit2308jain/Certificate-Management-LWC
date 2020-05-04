@@ -2,6 +2,7 @@ import { LightningElement, wire, track, api } from 'lwc';
 import getVoucherList from '@salesforce/apex/VoucherController.getVoucherList';
 import getVoucher from '@salesforce/apex/VoucherController.getVoucher';
 
+//Columns defined to be shown on lightning datatable
 const COLS = [
     { label: 'Voucher Id', fieldName: 'Voucher_Id__c' },
     { label: 'Name', fieldName: 'Name', type: 'text'},
@@ -13,8 +14,8 @@ const COLS = [
         typeAttributes: {
             label: 'Show',
             name: 'showRec',
-            iconName: 'action:preview',
-            title: 'Preview',
+            iconName: 'action:info',
+            title: 'Info',
             variant: 'border-filled',
             alternativeText: 'View'
         }
@@ -30,9 +31,11 @@ export default class VoucherDetails extends LightningElement {
     @track columns = COLS;
     @track draftValues = [];
     
+    //Using the apex method to fetch the list of records in Voucher Object
     @wire(getVoucherList)
     vouchers;
 
+    //Function used to fetch records according to the value given as input in the searchbar
     searchRecords = (event)  => {
 
         const searchTerm = event.target.value; 
@@ -60,6 +63,7 @@ export default class VoucherDetails extends LightningElement {
         }
     }
 
+    //Function to handle the action when view icon is pressed
     handleRowAction(event) {
 
         const row = event.detail.row;
@@ -72,6 +76,7 @@ export default class VoucherDetails extends LightningElement {
         }
     }
 
+    //Functions to open and close the view record modal.
     openModal() {  
         this.bShowModal = true;
     }

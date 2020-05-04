@@ -1,4 +1,5 @@
 <template>
+    <!-- Form for creating records -->
     <template if:true={showCreateForm}>
         <lightning-card title="Add Certification" icon-name="standard:knowledge">
             <lightning-button label="Show Certifications" variant="brand" onclick={showListView} slot="actions"></lightning-button>
@@ -31,6 +32,7 @@
         </lightning-card>
     </template>
 
+    <!-- Template to show the list of records -->
     <template if:true={showList}>
         <template if:true={certification}>
             <lightning-card title="Certification List">
@@ -52,6 +54,7 @@
             </lightning-card>
         </template>
 
+        <!-- Modal for viewing record data -->
         <template if:true={bShowModal}>
             <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
             <div class="slds-modal__container">
