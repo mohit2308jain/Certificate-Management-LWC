@@ -206,30 +206,43 @@ export default class CertificateRequestDetails extends LightningElement {
 
     //Function to update the status of request to passed or failed
     updateStatus = (currRow, status) => {
-        const fields = {}
+        
         console.log("hhj")
-        fields[CertificationReqRecId.fieldApiName] = currRow.Id;
-        fields[CertificationReqStatus.fieldApiName] = status;
-         
-        const recordInput = {fields};
-        updateRecord(recordInput).then(() => {
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success',
-                    message: 'Status Updated to ' + status,
-                    variant: 'success'
-                })
-            );
-            return refreshApex(this.req);
-        }).catch(error => {
+        if(currRow.Status__c == 'Approved'){
+            const fields = {}
+            fields[CertificationReqRecId.fieldApiName] = currRow.Id;
+            fields[CertificationReqStatus.fieldApiName] = status;
+            
+            const recordInput = {fields};
+            updateRecord(recordInput).then(() => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Success',
+                        message: 'Status Updated to ' + status,
+                        variant: 'success'
+                    })
+                );
+                return refreshApex(this.req);
+            }).catch(error => {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error',
+                        message: 'Error occured in updating status',
+                        variant: 'error'
+                    })
+                );
+            })
+        }
+        else{
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Error',
-                    message: 'Error occured in updating status',
+                    message: 'Cannot Change status as request is not approved.',
                     variant: 'error'
                 })
             );
-        })
+        }
+        
     }
 
 
