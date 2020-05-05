@@ -207,7 +207,6 @@ export default class CertificateRequestDetails extends LightningElement {
     //Function to update the status of request to passed or failed
     updateStatus = (currRow, status) => {
         
-        console.log("hhj")
         if(currRow.Status__c == 'Approved'){
             const fields = {}
             fields[CertificationReqRecId.fieldApiName] = currRow.Id;
