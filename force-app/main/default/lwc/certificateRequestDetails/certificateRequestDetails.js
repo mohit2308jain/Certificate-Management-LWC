@@ -43,21 +43,19 @@ const COLS = [
             alternativeText: 'Delete'
         }
     },
-    { label: 'Passed', type: 'button-icon', initialWidth: 75,
+    { label: 'Passed', type: 'button', initialWidth: 75,
         typeAttributes: {
-            label: 'ChangeToPassed',
+            label: 'Yes',
             name: 'passedRec',
-            iconName: 'action:approval',
             title: 'Passed',
             variant: 'border-filled',
             alternativeText: 'Passed'
         }
     },
-    {  type: 'button-icon', initialWidth: 75,
+    {  type: 'button', initialWidth: 75,
         typeAttributes: {
-            label: 'ChangeToFailed',
+            label: 'No',
             name: 'failedRec',
-            iconName: 'action:reject',
             title: 'Failed',
             variant: 'border-filled',
             alternativeText: 'Failed'
@@ -188,9 +186,9 @@ export default class CertificateRequestDetails extends LightningElement {
         } else if (event.detail.action.label==='remove') {
             console.log('clicked Delete button');
             this.deleteRequests(row);
-        } else if(event.detail.action.label==='ChangeToPassed'){
+        } else if(event.detail.action.name==='passedRec'){
             this.updateStatus(row,'Passed');
-        } else if(event.detail.action.label==='ChangeToFailed'){
+        } else if(event.detail.action.name==='failedRec'){
             this.updateStatus(row,'Failed');
         }
 
