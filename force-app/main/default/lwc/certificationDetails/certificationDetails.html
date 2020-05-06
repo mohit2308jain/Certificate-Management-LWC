@@ -2,7 +2,8 @@
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
         <lightning-card title="Add Certification" icon-name="standard:knowledge">
-            <lightning-button label="Show Certifications" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-button label="Show Certifications" variant="brand" icon-name="utility:list" icon-position="right"
+                onclick={showListView} slot="actions"></lightning-button>
             <lightning-record-edit-form object-api-name="Certification__c">
                 <div class="addCert">
                     <form>
@@ -36,7 +37,8 @@
     <template if:true={showList}>
         <template if:true={certification}>
             <lightning-card title="Certification List">
-                <lightning-button label="New Certification" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
+                <lightning-button label="New Certification" variant="brand" icon-name="utility:new" icon-position="right"
+                    onclick={showFormView} slot="actions"></lightning-button>
                 <div class="searchField">
                     <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification Name">
                     </lightning-input>

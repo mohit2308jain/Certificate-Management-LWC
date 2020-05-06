@@ -2,7 +2,8 @@
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
         <lightning-card title="Add Employee" icon-name="action:user">
-            <lightning-button label="Show Employees" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-button label="Show Employees" variant="brand" icon-name="utility:list" icon-position="right"
+                onclick={showListView} slot="actions"></lightning-button>
             <lightning-record-edit-form object-api-name="Employee__c">
                 <div class="addEmp">
 
@@ -50,7 +51,8 @@
 
         <template if:true={employee}>
             <lightning-card title="Employee List">
-                <lightning-button label="New Employee" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
+                <lightning-button label="New Employee" variant="brand" icon-name="utility:new" icon-position="right"
+                    onclick={showFormView} slot="actions"></lightning-button>
                 <div class="searchField">
                     <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
                     </lightning-input>

@@ -2,7 +2,8 @@
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
         <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
-            <lightning-button label="Show Vouchers" variant="brand" onclick={showListView} slot="actions"></lightning-button>
+            <lightning-button label="Show Vouchers" variant="brand" icon-name="utility:list" icon-position="right"
+                onclick={showListView} slot="actions"></lightning-button>
             <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
                 <div class="addVou">
                     <form>
@@ -40,7 +41,8 @@
 
         <template if:true={vouchers}>
             <lightning-card title="Voucher List">
-                <lightning-button label="New Voucher" variant="brand" onclick={showFormView} slot="actions"></lightning-button>
+                <lightning-button label="New Voucher" variant="brand" icon-name="utility:new" icon-position="right"
+                    onclick={showFormView} slot="actions"></lightning-button>
                 <div class="searchField">
                     <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
                     </lightning-input>

@@ -10,6 +10,7 @@ import getRequest from '@salesforce/apex/RequestController.getRequest';
 //Importing all neccessary fields from Certification Request Object.
 import Certification_Request_Object from '@salesforce/schema/Certification_Request__c';
 import CertificationReqRecId from '@salesforce/schema/Certification_Request__c.Id';
+import CertificationIsApp from '@salesforce/schema/Certification_Request__c.isNotApproved__c';
 import CertificationReqStatus from '@salesforce/schema/Certification_Request__c.Status__c';
 import CertificationReqDueDate from '@salesforce/schema/Certification_Request__c.Due_Date__c';
 import CertificationReqVoucher from '@salesforce/schema/Certification_Request__c.Voucher__c';
@@ -48,8 +49,9 @@ const COLS = [
             label: 'Yes',
             name: 'passedRec',
             title: 'Passed',
-            variant: 'border-filled',
-            alternativeText: 'Passed'
+            disabled: {fieldName : 'isNotApproved__c' }, 
+            variant: 'success'
+           
         }
     },
     {  type: 'button', initialWidth: 75,
@@ -57,8 +59,8 @@ const COLS = [
             label: 'No',
             name: 'failedRec',
             title: 'Failed',
-            variant: 'border-filled',
-            alternativeText: 'Failed'
+            disabled: {fieldName : 'isNotApproved__c' },
+            variant: 'destructive'
         }
     }
 ];
@@ -117,6 +119,7 @@ export default class CertificateRequestDetails extends LightningElement {
                 show.Name = res.Name;
                 show.Certification__c = res.Certification__r.Name;
                 show.Employee__c = res.Employee__r.Name;
+                show.isNotApproved__c = res.isNotApproved__c;
                 if(res.Voucher__r != null){
                     show.Voucher__c = res.Voucher__r.Name;
                 }
@@ -205,41 +208,29 @@ export default class CertificateRequestDetails extends LightningElement {
     //Function to update the status of request to passed or failed
     updateStatus = (currRow, status) => {
         
-        if(currRow.Status__c == 'Approved'){
-            const fields = {}
-            fields[CertificationReqRecId.fieldApiName] = currRow.Id;
-            fields[CertificationReqStatus.fieldApiName] = status;
-            
-            const recordInput = {fields};
-            updateRecord(recordInput).then(() => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Success',
-                        message: 'Status Updated to ' + status,
-                        variant: 'success'
-                    })
-                );
-                return refreshApex(this.req);
-            }).catch(error => {
-                this.dispatchEvent(
-                    new ShowToastEvent({
-                        title: 'Error',
-                        message: 'Error occured in updating status',
-                        variant: 'error'
-                    })
-                );
-            })
-        }
-        else{
+        const fields = {}
+        fields[CertificationReqRecId.fieldApiName] = currRow.Id;
+        fields[CertificationReqStatus.fieldApiName] = status;
+        
+        const recordInput = {fields};
+        updateRecord(recordInput).then(() => {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'Status Updated to ' + status,
+                    variant: 'success'
+                })
+            );
+            return refreshApex(this.req);
+        }).catch(error => {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Error',
-                    message: 'Cannot Change status as request is not approved.',
+                    message: 'Error occured in updating status',
                     variant: 'error'
                 })
             );
-        }
-        
+        })
     }
 
 
