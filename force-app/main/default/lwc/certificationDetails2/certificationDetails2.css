@@ -1,13 +1,14 @@
-.addCert{
-    margin: 50px;
-}
-.btn{
-    margin: 20px;   
-}
-.btn-1{
-    margin-left: 5px
-}
 .searchField{
     margin-left: 30px;
     margin-right: 30px;
+}
+
+.frame{
+    border: 10px solid whitesmoke;
+    margin: 8px;
+}
+
+.tableBorder{
+    border-top: 3px solid burlywood;
+    margin: 5px;   
 }

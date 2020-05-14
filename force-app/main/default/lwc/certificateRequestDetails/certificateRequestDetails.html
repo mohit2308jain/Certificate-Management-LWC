@@ -1,60 +1,67 @@
 <template>
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
-        <lightning-card title="Add Certification Request" icon-name="standard:partner_fund_request">
-            <lightning-button label="Show Requests" variant="brand" icon-name="utility:list" icon-position="right" 
-                onclick={showListView} slot="actions"></lightning-button>
-            <lightning-record-edit-form object-api-name="Certification_Request__c" onsuccess={createRequest}>
-                <div class="addCR">
-                    <form>
-                        <lightning-input-field field-name={certification_field} placeholder="Please Select Certification">
-                        </lightning-input-field>
-    
-                        <lightning-input-field field-name={employee_field} placeholder="Please Select Employee">
-                        </lightning-input-field>
-    
-                        <lightning-input-field field-name={voucher_field} placeholder="Please Select Voucher">
-                        </lightning-input-field>
-    
-                        <lightning-input-field field-name={dueDate_field} placeholder="Please Enter Request Due Date">
-                        </lightning-input-field>
-    
-                        <lightning-input-field field-name={comments_field} placeholder="Any Comments">
-                        </lightning-input-field>
-                        
-                        <div class="btn">
-                            <lightning-button class="btn-1" type="submit" variant="brand" label="Add Request"></lightning-button>
-                            <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
-                        </div>
-    
-                        
-                    </form>
-                </div>
-            </lightning-record-edit-form>
-        </lightning-card>
+        <div class="frame">
+            <lightning-card title="Add Certification Request" icon-name="standard:partner_fund_request">
+                <lightning-button label="Show Requests" variant="brand" icon-name="utility:list" icon-position="right" 
+                    onclick={showListView} slot="actions"></lightning-button>
+                <lightning-record-edit-form object-api-name="Certification_Request__c" onsuccess={createRequest}>
+                    <div class="addCR">
+                        <form>
+                            <lightning-input-field field-name={certification_field} placeholder="Please Select Certification">
+                            </lightning-input-field>
+        
+                            <lightning-input-field field-name={employee_field} placeholder="Please Select Employee">
+                            </lightning-input-field>
+        
+                            <lightning-input-field field-name={voucher_field} placeholder="Please Select Voucher">
+                            </lightning-input-field>
+        
+                            <lightning-input-field field-name={dueDate_field} placeholder="Please Enter Request Due Date">
+                            </lightning-input-field>
+        
+                            <lightning-input-field field-name={comments_field} placeholder="Any Comments">
+                            </lightning-input-field>
+                            
+                            <div class="btn">
+                                <lightning-button class="btn-1" type="submit" variant="brand" label="Add Request"></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
+                            </div>
+        
+                            
+                        </form>
+                    </div>
+                </lightning-record-edit-form>
+            </lightning-card>
+        </div>
     </template>
 
     <!-- Template to show the list of records -->
     <template if:true={showList}>
         <template if:true={requests}>
-            <lightning-card title="Request List">
-                <lightning-button label="New Request" variant="brand" icon-name="utility:new" icon-position="right"
-                    onclick={showFormView} slot="actions"></lightning-button>
-                <div class="searchField">
-                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification or Employee Name">
-                    </lightning-input>
-                </div>
-                <lightning-datatable key-field="Id"
-                data={requests}
-                columns={columns}
-                onrowaction={handleRowAction}
-                show-row-number-column="true"
-                draft-values={draftValues}
-                hide-checkbox-column="true"
-                >
+            <div class="frame">
+                <lightning-card title="Request List">
+                    <lightning-button label="New Request" variant="brand" icon-name="utility:new" icon-position="right"
+                        onclick={showFormView} slot="actions">
+                    </lightning-button>
+                    <div class="searchField">
+                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification or Employee Name">
+                        </lightning-input>
+                    </div>
+                    <div class="tableBorder">
+                        <lightning-datatable key-field="Id"
+                        data={requests}
+                        columns={columns}
+                        onrowaction={handleRowAction}
+                        show-row-number-column="true"
+                        draft-values={draftValues}
+                        hide-checkbox-column="true"
+                        >
 
-            </lightning-datatable>
-            </lightning-card>
+                        </lightning-datatable>
+                    </div>
+                </lightning-card>
+            </div>
         </template>
 
         <!-- Modal for viewing record data -->

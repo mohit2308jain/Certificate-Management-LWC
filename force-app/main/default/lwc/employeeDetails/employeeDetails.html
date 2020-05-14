@@ -1,73 +1,80 @@
 <template>
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
-        <lightning-card title="Add Employee" icon-name="action:user">
-            <lightning-button label="Show Employees" variant="brand" icon-name="utility:list" icon-position="right"
-                onclick={showListView} slot="actions"></lightning-button>
-            <lightning-record-edit-form object-api-name="Employee__c">
-                <div class="addEmp">
+        <div class="frame">
+            <lightning-card title="Add Employee" icon-name="action:user">
+                <lightning-button label="Show Employees" variant="brand" icon-name="utility:list" icon-position="right"
+                    onclick={showListView} slot="actions"></lightning-button>
+                <lightning-record-edit-form object-api-name="Employee__c">
+                    <div class="addEmp">
 
-                    <form>
-                        <lightning-input label="Name" onchange={handleChanges}
-                        placeholder="Please Enter Employee's Name" required></lightning-input>
+                        <form>
+                            <lightning-input label="Name" onchange={handleChanges}
+                            placeholder="Please Enter Employee's Name" required class="labelMargin"></lightning-input>
 
-                        <lightning-input label="Company Name" onchange={handleChanges}
-                        placeholder="Please Enter Employee's Company Name" required></lightning-input>
+                            <lightning-input label="Company Name" onchange={handleChanges}
+                            placeholder="Please Enter Employee's Company Name" required class="labelMargin"></lightning-input>
 
-                        <lightning-input label="Email" onchange={handleChanges} type="email"
-                        placeholder="Please Enter Employee's Email" required></lightning-input>
+                            <lightning-input label="Email" onchange={handleChanges} type="email"
+                            placeholder="Please Enter Employee's Email" required class="labelMargin"></lightning-input>
 
-                        <lightning-input label="Primary Skill" onchange={handleChanges}
-                        placeholder="Please Enter Employee's Main Skill" required></lightning-input>
+                            <lightning-input label="Primary Skill" onchange={handleChanges}
+                            placeholder="Please Enter Employee's Main Skill" required class="labelMargin"></lightning-input>
 
-                        <lightning-input label="Secondary Skill" onchange={handleChanges}
-                        placeholder="Please Enter Employee's secondary Skill"></lightning-input>
+                            <lightning-input label="Secondary Skill" onchange={handleChanges}
+                            placeholder="Please Enter Employee's secondary Skill" class="labelMargin"></lightning-input>
 
-                        <lightning-input label="Experience" onchange={handleChanges} type="number"
-                        placeholder="Please Enter Employee's Experience" required></lightning-input>
+                            <lightning-input label="Experience" onchange={handleChanges} type="number"
+                            placeholder="Please Enter Employee's Experience" required class="labelMargin"></lightning-input>
 
-                        <lightning-textarea label="Comments" onchange={handleChanges}
-                        placeholder="Any Comments"></lightning-textarea>
-                        
-                        <div class="btn">
+                            <lightning-textarea label="Comments" onchange={handleChanges}
+                            placeholder="Any Comments" class="labelMargin"></lightning-textarea>
+                            
+                            <div class="btn">
 
-                            <lightning-button class="btn-1" label="Add Employee" variant="brand" 
-                            onclick={createEmployee}></lightning-button>
+                                <lightning-button class="btn-1" label="Add Employee" variant="brand" 
+                                onclick={createEmployee}></lightning-button>
 
-                            <lightning-button class="btn-1" label="Reset" variant="destructive" 
-                            onclick={clear}></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" 
+                                onclick={clear}></lightning-button>
 
-                        </div>
-                    </form>
+                            </div>
+                        </form>
 
-                </div>
+                    </div>
 
-            </lightning-record-edit-form>
-        </lightning-card>
+                </lightning-record-edit-form>
+            </lightning-card>
+        </div>
     </template>
 
     <!-- Template to show the list of records -->
     <template if:true={showList}>
 
         <template if:true={employee}>
-            <lightning-card title="Employee List">
-                <lightning-button label="New Employee" variant="brand" icon-name="utility:new" icon-position="right"
-                    onclick={showFormView} slot="actions"></lightning-button>
-                <div class="searchField">
-                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
-                    </lightning-input>
-                </div>
-                <lightning-datatable key-field="Id"
-                data={employee.data}
-                columns={columns}
-                onrowaction={handleRowAction}
-                onsave={handleSave}
-                draft-values={draftValues}
-                hide-checkbox-column="true"
-                >
+            <div class="frame">
+                <lightning-card title="Employee List">
+                    <lightning-button label="New Employee" variant="brand" icon-name="utility:new" icon-position="right"
+                        onclick={showFormView} slot="actions"></lightning-button>
+                    <div class="searchField">
+                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Employee Name">
+                        </lightning-input>
+                    </div>
 
-            </lightning-datatable>
-            </lightning-card>
+                    <div class="tableBorder">
+                        <lightning-datatable key-field="Id"
+                        data={employee.data}
+                        columns={columns}
+                        onrowaction={handleRowAction}
+                        onsave={handleSave}
+                        draft-values={draftValues}
+                        hide-checkbox-column="true"
+                        >
+
+                        </lightning-datatable>
+                    </div>
+                </lightning-card>
+            </div>
         </template>
 
         <!-- Modal for viewing record data -->

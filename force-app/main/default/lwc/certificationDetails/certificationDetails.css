@@ -1,5 +1,5 @@
 .addCert{
-    margin: 50px;
+    margin: 20px;
 }
 .btn{
     margin: 20px;   
@@ -10,4 +10,18 @@
 .searchField{
     margin-left: 30px;
     margin-right: 30px;
+}
+
+.frame{
+    border: 10px solid whitesmoke;
+    margin: 8px;
+}
+
+.tableBorder{
+    border-top: 3px solid burlywood;
+    margin: 5px;   
+}
+
+.labelMargin{
+    margin-top: 10px;
 }

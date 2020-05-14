@@ -1,63 +1,70 @@
 <template>
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
-        <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
-            <lightning-button label="Show Vouchers" variant="brand" icon-name="utility:list" icon-position="right"
-                onclick={showListView} slot="actions"></lightning-button>
-            <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
-                <div class="addVou">
-                    <form>
+        <div class="frame">
+            <lightning-card title="Add Voucher" icon-name="standard:partner_marketing_budget">
+                <lightning-button label="Show Vouchers" variant="brand" icon-name="utility:list" icon-position="right"
+                    onclick={showListView} slot="actions"></lightning-button>
+                <lightning-record-edit-form object-api-name="Voucher__c" onsuccess={createVoucher}>
+                    <div class="addVou">
+                        <form>
 
-                        <lightning-input-field field-name={name_field} required>
-                        </lightning-input-field>
+                            <lightning-input-field field-name={name_field} required>
+                            </lightning-input-field>
 
-                        <lightning-input-field field-name={validity_field}>
-                        </lightning-input-field>
+                            <lightning-input-field field-name={validity_field}>
+                            </lightning-input-field>
 
-                        <lightning-input-field field-name={active_field} required>
-                        </lightning-input-field>
+                            <lightning-input-field field-name={active_field} required>
+                            </lightning-input-field>
 
-                        <lightning-input-field field-name={certification_field}>
-                        </lightning-input-field>
+                            <lightning-input-field field-name={certification_field}>
+                            </lightning-input-field>
 
-                        <lightning-input-field field-name={comments_field}>
-                        </lightning-input-field>
+                            <lightning-input-field field-name={comments_field}>
+                            </lightning-input-field>
 
-                        <div class="btn">
+                            <div class="btn">
 
-                            <lightning-button class="btn-1" type="submit" variant="brand" label="Add Voucher"></lightning-button>
-                            <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
+                                <lightning-button class="btn-1" type="submit" variant="brand" label="Add Voucher"></lightning-button>
+                                <lightning-button class="btn-1" label="Reset" variant="destructive" onclick={clear}></lightning-button>
 
-                        </div>
-            
-                    </form>
-                </div>
-            </lightning-record-edit-form>
-        </lightning-card>
+                            </div>
+                
+                        </form>
+                    </div>
+                </lightning-record-edit-form>
+            </lightning-card>
+        </div>
     </template>
 
     <!-- Template to show the list of records -->
     <template if:true={showList}>
 
         <template if:true={vouchers}>
-            <lightning-card title="Voucher List">
-                <lightning-button label="New Voucher" variant="brand" icon-name="utility:new" icon-position="right"
-                    onclick={showFormView} slot="actions"></lightning-button>
-                <div class="searchField">
-                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
-                    </lightning-input>
-                </div>
-                <lightning-datatable key-field="Id"
-                    data={vouchers.data}
-                    columns={columns}
-                    onrowaction={handleRowAction}
-                    onsave={handleSave}
-                    draft-values={draftValues}
-                    hide-checkbox-column="true">
-                
-                </lightning-datatable>
-            </lightning-card>
-            
+            <div class="frame">
+                <lightning-card title="Voucher List">
+                    <lightning-button label="New Voucher" variant="brand" icon-name="utility:new" icon-position="right"
+                        onclick={showFormView} slot="actions"></lightning-button>
+                    <div class="searchField">
+                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
+                        </lightning-input>
+                    </div>
+
+                    <div class="tableBorder">
+                        <lightning-datatable key-field="Id"
+                            data={vouchers.data}
+                            columns={columns}
+                            onrowaction={handleRowAction}
+                            onsave={handleSave}
+                            draft-values={draftValues}
+                            hide-checkbox-column="true">
+                        
+                        </lightning-datatable>
+                    </div>
+                </lightning-card>
+
+            </div>
         </template>
 
         <!-- Modal for viewing record data -->

@@ -1,59 +1,67 @@
 <template>
     <!-- Form for creating records -->
     <template if:true={showCreateForm}>
-        <lightning-card title="Add Certification" icon-name="standard:knowledge">
-            <lightning-button label="Show Certifications" variant="brand" icon-name="utility:list" icon-position="right"
-                onclick={showListView} slot="actions"></lightning-button>
-            <lightning-record-edit-form object-api-name="Certification__c">
-                <div class="addCert">
-                    <form>
-    
-                        <lightning-input label="Certificate Name" onchange={handleChanges}
-                        placeholder="Enter the Certification Name" required></lightning-input>
-
-                        <lightning-input label="Certificate Cost" onchange={handleChanges} type="number"
-                        placeholder="Enter the cost of Certification" required></lightning-input>
-    
-                        <lightning-textarea label="Comments" onchange={handleChanges}
-                        placeholder="Any Comments"></lightning-textarea>
-                        
-                        <div class="btn">
-
-                            <lightning-button class="btn-1" label="Add Certification"  variant="brand"
-                            onclick={createCertification} ></lightning-button>
+        <div class="frame">
+            <lightning-card title="Add Certification" icon-name="standard:knowledge">
+                <lightning-button label="Show Certifications" variant="brand" icon-name="utility:list" icon-position="right"
+                    onclick={showListView} slot="actions"></lightning-button>
+                <lightning-record-edit-form object-api-name="Certification__c">
+                    <div class="addCert">
+                        <form>
         
-                            <lightning-button class="btn-1" label="Reset" variant="destructive"
-                            onclick={clear} ></lightning-button>
+                            <lightning-input label="Certificate Name" onchange={handleChanges}
+                            placeholder="Enter the Certification Name" required class="labelMargin"></lightning-input>
 
-                        </div>
-    
-                    </form>
-                </div>
-            </lightning-record-edit-form>
-        </lightning-card>
+                            <lightning-input label="Certificate Cost" onchange={handleChanges} type="number"
+                            placeholder="Enter the cost of Certification" required class="labelMargin"></lightning-input>
+        
+                            <lightning-textarea label="Comments" onchange={handleChanges}
+                            placeholder="Any Comments" class="labelMargin"></lightning-textarea>
+                            
+                            <div class="btn">
+
+                                <lightning-button class="btn-1" label="Add Certification"  variant="brand"
+                                onclick={createCertification} ></lightning-button>
+            
+                                <lightning-button class="btn-1" label="Reset" variant="destructive"
+                                onclick={clear} ></lightning-button>
+
+                            </div>
+        
+                        </form>
+                    </div>
+                </lightning-record-edit-form>
+            </lightning-card>
+        </div>
     </template>
 
     <!-- Template to show the list of records -->
     <template if:true={showList}>
         <template if:true={certification}>
-            <lightning-card title="Certification List">
-                <lightning-button label="New Certification" variant="brand" icon-name="utility:new" icon-position="right"
-                    onclick={showFormView} slot="actions"></lightning-button>
-                <div class="searchField">
-                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification Name">
-                    </lightning-input>
-                </div>
-                <lightning-datatable key-field="Id"
-                    data={certification.data}
-                    columns={columns}
-                    onrowaction={handleRowAction}
-                    onsave={handleSave}
-                    draft-values={draftValues}
-                    hide-checkbox-column="true"
-                >
+            <div class="frame">
+                <lightning-card title="Certification List">
+                    <lightning-button label="New Certification" variant="brand" icon-name="utility:new" icon-position="right"
+                        onclick={showFormView} slot="actions"></lightning-button>
+                    <div class="searchField">
+                        <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Certification Name">
+                        </lightning-input>
+                    </div>
 
-            </lightning-datatable>
-            </lightning-card>
+                    <div class="tableBorder">
+                        <lightning-datatable key-field="Id"
+                            data={certification.data}
+                            columns={columns}
+                            onrowaction={handleRowAction}
+                            onsave={handleSave}
+                            draft-values={draftValues}
+                            hide-checkbox-column="true"
+                        >
+
+                        </lightning-datatable>
+
+                    </div> 
+                </lightning-card>
+            </div>
         </template>
 
         <!-- Modal for viewing record data -->

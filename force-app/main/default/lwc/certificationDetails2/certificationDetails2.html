@@ -1,21 +1,25 @@
 <template>
     <!-- Template to show the list of records -->
     <template if:true={certification.data}>
-        <lightning-card title="Certification List">
-            <div class="searchField">
-                <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search"  placeholder="Enter Certification Name">
-                </lightning-input>
-            </div>
-            <lightning-datatable key-field="Id"
-                data={certification.data}
-                columns={columns}
-                onrowaction={handleRowAction}
-                hide-checkbox-column="true"
-                show-row-number-column="true"
-            >
+        <div class="frame">
+            <lightning-card title="Certification List">
+                <div class="searchField">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search"  placeholder="Enter Certification Name">
+                    </lightning-input>
+                </div>
+                <div class="tableBorder">
+                    <lightning-datatable key-field="Id"
+                        data={certification.data}
+                        columns={columns}
+                        onrowaction={handleRowAction}
+                        hide-checkbox-column="true"
+                        show-row-number-column="true"
+                    >
 
-        </lightning-datatable>
-        </lightning-card>
+                    </lightning-datatable>
+                </div>    
+            </lightning-card>
+        </div>
     </template>
 
     <!-- Modal for viewing record data -->

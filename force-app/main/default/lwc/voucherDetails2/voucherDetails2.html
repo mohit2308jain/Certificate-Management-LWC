@@ -1,20 +1,25 @@
 <template>
     <!-- Template to show the list of records -->
     <template if:true={vouchers}>
-        <lightning-card title="Voucher List">
-            <div class="searchField">
-                <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
-                </lightning-input>
-            </div>
-            <lightning-datatable key-field="Id"
-                data={vouchers.data}
-                columns={columns}
-                onrowaction={handleRowAction}
-                hide-checkbox-column="true"
-                show-row-number-column="true">
-            
-            </lightning-datatable>
-        </lightning-card>
+        <div class="frame">
+            <lightning-card title="Voucher List">
+                <div class="searchField">
+                    <lightning-input type = "search" onchange = {searchRecords} class = "slds-m-bottom_small" label = "Search" placeholder="Enter Voucher Name">
+                    </lightning-input>
+                </div>
+                <div class="tableBorder">
+                    <lightning-datatable key-field="Id"
+                    data={vouchers.data}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column="true"
+                    show-row-number-column="true">
+                
+                    </lightning-datatable>
+                </div>
+                
+            </lightning-card>
+        </div>
         
     </template>
 
