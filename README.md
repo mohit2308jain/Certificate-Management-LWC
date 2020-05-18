@@ -14,13 +14,13 @@ salesforce. The application uses the following 4 custom objects:
 1. Employee Object – The employee object is used to store the details
 of the employees in salesforce database.
 Fields & Relationships:
- a. Employee Id (Auto Number)
- b. Employee Name (Text)
- c. Employee Email (Email)
- d. Experience (Number)
- e. Primary Skill (Text)
- f. Secondary Skill (Text)
- g. Comments (Text)
+a. Employee Id (Auto Number)
+b. Employee Name (Text)
+c. Employee Email (Email)
+d. Experience (Number)
+e. Primary Skill (Text)
+f. Secondary Skill (Text)
+g. Comments (Text)
 
 2. Certification Object – The certification object is used to store the
 details of the certifications in salesforce database.
