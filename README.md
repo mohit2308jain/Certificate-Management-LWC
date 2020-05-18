@@ -1,3 +1,62 @@
+# Certificate Management App
+
+The Certification Management Application is a salesforce-based application for
+the management of certifications and vouchers. The application is made using
+the tools such as process builder, approval process, apex triggers provided by
+salesforce. The application uses the following 4 custom objects:
+1. Employees
+2. Certifications
+3. Vouchers
+4. Certification Requests
+
+## Objects and Fields
+
+1. Employee Object – The employee object is used to store the details
+of the employees in salesforce database.
+Fields & Relationships:
+ Employee Id (Auto Number)
+ Employee Name (Text)
+ Employee Email (Email)
+ Experience (Number)
+ Primary Skill (Text)
+ Secondary Skill (Text)
+ Comments (Text)
+
+2. Certification Object – The certification object is used to store the
+details of the certifications in salesforce database.
+Fields & Relationships:
+ Certification Id (Auto Number)
+ Certification Name (Text)
+ Certification Cost (Currency)
+ Comments (Text)
+
+3. Voucher Object – The voucher object is used to store the details of
+the available vouchers in salesforce database.
+Fields & Relationships:
+ Voucher Id (Auto Number)
+ Voucher Name (Text)
+ Certification Object (LookUp Relationship)
+ Voucher Cost (Formula((Currency))
+ Validity (Date)
+ Active (Boolean)
+ Comments (Text)
+4. Certification Request Object – The certification request object is
+used to store the details of the certification requests in salesforce
+database.
+Fields & Relationships:
+ Request Id (Auto Number)
+ Certification Object (Master-Detail Relationship)
+ Employee Object (Master-Detail Relationship)
+ Voucher Object (LookUp Relationship)
+ Due Date (Date)
+ Status (picklist)
+a. Draft
+b. Approved
+c. Rejected
+d. Passed
+e. Failed
+ Comments (Text)
+
 # Salesforce App
 
 This guide helps Salesforce developers who are new to Visual Studio Code go from zero to a deployed app using Salesforce Extensions for VS Code and Salesforce CLI.
