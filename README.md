@@ -14,48 +14,48 @@ salesforce. The application uses the following 4 custom objects:
 1. Employee Object – The employee object is used to store the details
 of the employees in salesforce database.
 Fields & Relationships:
- Employee Id (Auto Number)
- Employee Name (Text)
- Employee Email (Email)
- Experience (Number)
- Primary Skill (Text)
- Secondary Skill (Text)
- Comments (Text)
+ a. Employee Id (Auto Number)
+ b. Employee Name (Text)
+ c. Employee Email (Email)
+ d. Experience (Number)
+ e. Primary Skill (Text)
+ f. Secondary Skill (Text)
+ g. Comments (Text)
 
 2. Certification Object – The certification object is used to store the
 details of the certifications in salesforce database.
 Fields & Relationships:
- Certification Id (Auto Number)
- Certification Name (Text)
- Certification Cost (Currency)
- Comments (Text)
+ a. Certification Id (Auto Number)
+ b. Certification Name (Text)
+ c. Certification Cost (Currency)
+ d. Comments (Text)
 
 3. Voucher Object – The voucher object is used to store the details of
 the available vouchers in salesforce database.
 Fields & Relationships:
- Voucher Id (Auto Number)
- Voucher Name (Text)
- Certification Object (LookUp Relationship)
- Voucher Cost (Formula((Currency))
- Validity (Date)
- Active (Boolean)
- Comments (Text)
+ a. Voucher Id (Auto Number)
+ b. Voucher Name (Text)
+ c. Certification Object (LookUp Relationship)
+ d. Voucher Cost (Formula((Currency))
+ e.  Validity (Date)
+ f. Active (Boolean)
+ g. Comments (Text)
 4. Certification Request Object – The certification request object is
 used to store the details of the certification requests in salesforce
 database.
 Fields & Relationships:
- Request Id (Auto Number)
- Certification Object (Master-Detail Relationship)
- Employee Object (Master-Detail Relationship)
- Voucher Object (LookUp Relationship)
- Due Date (Date)
- Status (picklist)
-a. Draft
-b. Approved
-c. Rejected
-d. Passed
-e. Failed
- Comments (Text)
+ a. Request Id (Auto Number)
+ b.  Certification Object (Master-Detail Relationship)
+ c. Employee Object (Master-Detail Relationship)
+ d. Voucher Object (LookUp Relationship)
+ e. Due Date (Date)
+ f. Status (picklist)
+        1. Draft
+        2. Approved
+        3. Rejected
+        4. Passed
+        5. Failed
+ g. Comments (Text)
 
 # Salesforce App
 
