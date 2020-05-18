@@ -1,3 +1,62 @@
+# Certificate Management App
+
+The Certification Management Application is a salesforce-based application for
+the management of certifications and vouchers. The application is made using
+the tools such as process builder, approval process, apex triggers provided by
+salesforce. The application uses the following 4 custom objects:
+1. Employees
+2. Certifications
+3. Vouchers
+4. Certification Requests
+
+## Objects and Fields
+
+1. Employee Object – The employee object is used to store the details
+of the employees in salesforce database.
+Fields & Relationships:
+a. Employee Id (Auto Number)
+b. Employee Name (Text)
+c. Employee Email (Email)
+d. Experience (Number)
+e. Primary Skill (Text)
+f. Secondary Skill (Text)
+g. Comments (Text)
+
+2. Certification Object – The certification object is used to store the
+details of the certifications in salesforce database.
+Fields & Relationships:
+ a. Certification Id (Auto Number)
+ b. Certification Name (Text)
+ c. Certification Cost (Currency)
+ d. Comments (Text)
+
+3. Voucher Object – The voucher object is used to store the details of
+the available vouchers in salesforce database.
+Fields & Relationships:
+ a. Voucher Id (Auto Number)
+ b. Voucher Name (Text)
+ c. Certification Object (LookUp Relationship)
+ d. Voucher Cost (Formula((Currency))
+ e.  Validity (Date)
+ f. Active (Boolean)
+ g. Comments (Text)
+4. Certification Request Object – The certification request object is
+used to store the details of the certification requests in salesforce
+database.
+Fields & Relationships:
+ a. Request Id (Auto Number)
+ b.  Certification Object (Master-Detail Relationship)
+ c. Employee Object (Master-Detail Relationship)
+ d. Voucher Object (LookUp Relationship)
+ e. Due Date (Date)
+ f. Status (picklist)
+        1. Draft
+        2. Approved
+        3. Rejected
+        4. Passed
+        5. Failed
+ g. Comments (Text)
+
 # Salesforce App
 
 This guide helps Salesforce developers who are new to Visual Studio Code go from zero to a deployed app using Salesforce Extensions for VS Code and Salesforce CLI.
