@@ -114,6 +114,8 @@ export default class CertificateRequestDetails extends LightningElement {
     handleDataToShow = (result) => {
         let dataToShow = [];
             result.forEach((res) => {
+                console.log(res.Certification__r)
+                console.log(res.Certification__r.Name)
                 let show = {};
                 show.Id = res.Id;
                 show.Name = res.Name;
