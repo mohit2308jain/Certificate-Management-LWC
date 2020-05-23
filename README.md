@@ -1,5 +1,7 @@
 # Certificate Management App
 
+Follow Documentation PDF present in Certification Management Application PPT and Documentation folder. 
+
 The Certification Management Application is a salesforce-based application for
 the management of certifications and vouchers. The application is made using
 the tools such as process builder, approval process, apex triggers provided by
